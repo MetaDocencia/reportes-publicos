@@ -12,7 +12,7 @@ This document aims to present information about the participants and the feedbac
 
 All individuals who participate and contribute to this repository must adhere to our [community guidelines](https://www.metadocencia.org/en/pdc/) and follow these [contribution guide](https://github.com/MetaDocencia/docs/blob/master/CONTRIBUIR.md) on how and where to collaborate with MetaDocencia.
 
-You can download the final report as an (HTML file)[https://github.com/MetaDocencia/reportes-publicos/blob/main/mision_exploracion/Misi%C3%B3n%20exploraci%C3%B3n.html]. You can find the code we used in this repository but with dummy databases to protect the participants' privacy and data.  
+You can download the final report as an [HTML file](https://github.com/MetaDocencia/reportes-publicos/blob/main/mision_exploracion/Misi%C3%B3n%20exploraci%C3%B3n.html). You can find the code we used in this repository but with dummy databases to protect the participants' privacy and data.  
 
 ### License
 
