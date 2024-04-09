@@ -1,0 +1,638 @@
+---
+title: ""
+format: 
+  html:
+    toc: true
+    embed-resources: true
+execute: 
+  echo: false
+  warning: false
+---
+
+![](imagenes/grupo-estudio-pre-nasa-tops-2024-2.jpg)
+
+
+```{r}
+# Paquetes
+
+# Manipulación de datos y visualización
+library(tidyverse)
+library(ggthemes)
+
+# Mapas
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(countrycode)
+library(ggiraph)
+
+# devtools::install_github("yutannihilation/ggsflabel")
+library(ggsflabel)
+
+# Importar datos
+library(googlesheets4)
+library(googledrive)
+library(readxl)
+
+
+# Análisis del texto
+library(fuzzyjoin)
+library(stringdist)
+library(tidystringdist)
+
+```
+
+
+
+
+```{r}
+# Autenticación y acceso al google drive
+drive_auth()
+```
+
+
+```{r}
+
+# Datos de inscripción
+
+# Importar datos de inscripciones desde una google sheet
+inscripciones <- read_sheet("https://docs.google.com/spreadsheets/d/1rJ90IAeGVGN_lrOitZFA8UMRwhT4arPJVGVZ2QmcOus/edit#gid=0") 
+
+# Renombrar las columnas principales
+names(inscripciones)[1:14] <- c("marca_temporal", "nombre", "apellido", "pronombre", "email", "pais", "comunidad", "eventos", "accesibilidad", "como_conoces", "interes")
+
+# Remover emails duplicados
+inscripciones <- inscripciones %>% 
+  distinct(email, .keep_all = TRUE)
+
+# Importar categorización del interés de los participantes
+interes_categoria <- read_sheet("https://docs.google.com/spreadsheets/d/1UWEYVg5VoYKI21Nmc9fLSc1NLqNGl19PCxbSAZSia3Q/edit#gid=0") 
+
+```
+
+```{r}
+# Datos de encuestas
+
+# Importar feedback de los participantes desde una google sheet
+encuestas <- read_sheet("https://docs.google.com/spreadsheets/d/1RAwIgUo5p3b4gH_2O_r7S58sLrvudZxa3eXHN3ECYJo/edit#gid=0")
+
+# Renombrar las variables
+names(encuestas) <- c("marca_temporal", "para_mantener", "para_mejorar",
+                      "recomendar")
+
+# Agregar ID a cada fila
+encuestas$ID <- 1:nrow(encuestas)
+
+# Categorización de las respuestas de feedback
+# Este documento fue creado por fuera de este script, a mano.
+encuestas_categorias <- read_sheet("https://docs.google.com/spreadsheets/d/1KXp_-GOH8t11ITAXd1JnHS8MArClmm1xdxzDfoZhqv8/edit#gid=0")
+
+# Nombre y mail de las personas en el slack de la organización
+miembros_slack <- read_sheet("https://docs.google.com/spreadsheets/d/1CYXZlHdmnzHR3u1tT1wmCDt1SSDuq7dvSelDsdRGd2Q/edit#gid=0")
+
+# Asistentes a las reuniones por zoom 
+zoom <- read_sheet("https://docs.google.com/spreadsheets/d/1ML2r3r2M3i0OFtPAztPvOwdSCeLlQsOWVgQTbYYF2gs/edit#gid=0")
+
+ 
+# función para sacar tildes de los nombres
+sacar_tildes <- function(string) {
+  string %>%
+    str_replace_all("á", "a") %>%
+    str_replace_all("é", "e") %>%
+    str_replace_all("í", "i") %>%
+    str_replace_all("ó", "o") %>%
+    str_replace_all("ú", "u") %>%
+    str_replace_all("Á", "A") %>%
+    str_replace_all("É", "E") %>%
+    str_replace_all("Í", "I") %>%
+    str_replace_all("Ó", "O") %>%
+    str_replace_all("Ú", "U")
+}
+
+zoom <- zoom %>% 
+  mutate(nombre2 = sacar_tildes(nombre))
+
+
+
+```
+
+
+## Who signed up?
+
+```{r}
+
+# Tabla con porcentaje de inscriptos por país
+paises <- inscripciones %>%
+  group_by(pais) %>%
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  mutate(porcentaje = round(n/sum(n)*100,1))
+
+# Vector con los distintos países de los participantes
+paises_metadocencia <- paises %>%
+  drop_na() %>%
+  pull(pais)
+
+```
+
+A total of `r nrow(inscripciones)` participants from `r nrow(paises)` different countries signed up for the sessions.
+
+```{r}
+
+# Información de longitud y latitud para crear el mapa
+mapamundi <- ne_countries(scale = "medium", returnclass = "sf") 
+
+# Códigos iso3 para cada país, y nombre en español e inglés
+codigos <- countrycode::codelist %>% 
+  select(pais_ES = cldr.name.es, iso_a3 = iso3c) %>% 
+  drop_na(pais_ES) %>% 
+  filter(iso_a3 %in% mapamundi$iso_a3)
+
+# Unir nombres en español al mapamundi
+mapamundi <- mapamundi %>% 
+  left_join(codigos, by = "iso_a3") 
+
+# Sumar información sobre los inscriptos al mapamundi
+mapamundi <- mapamundi %>% 
+  mutate(metadocencia = ifelse(pais_ES %in% paises_metadocencia, TRUE, FALSE)) %>% 
+  left_join(paises, by = c("pais_ES" = "pais")) %>% 
+  mutate(etiqueta = ifelse(metadocencia == TRUE, 
+                           str_c(name, " ", porcentaje, "%"), NA))
+
+
+```
+
+```{r}
+
+# Visualización de mapa
+mapamundi %>% 
+  ggplot() +
+  geom_sf(aes(fill = metadocencia), color = "white", size = .3) +
+  labs(title = "",
+       subtitle = "",
+       x = "",
+       y = "") +
+  scale_fill_manual(values = c("gray", "#c83737")) +
+  theme_map() +
+  theme(legend.position = "none") +
+#  coord_sf(xlim = c(-160, 90), ylim = c(-55, 90)) +
+  geom_sf_label_repel(aes(label = etiqueta),
+                      force = 30, seed = 10,
+                      direction = "both") 
+ 
+
+
+```
+
+```{r}
+
+# Visualización del mapa
+mapamundi %>% 
+  ggplot() +
+  geom_sf(aes(fill = metadocencia), color = "white", size = .3) +
+  labs(title = "",
+       subtitle = "",
+       x = "",
+       y = "") +
+  scale_fill_manual(values = c("gray", "#c83737")) +
+  theme_map() +
+  theme(legend.position = "none") #+
+#  coord_sf(xlim = c(-160, 90), ylim = c(-55, 90))
+
+
+```
+
+## Community
+
+```{r}
+# Datos de comunidades
+Comunidad <- sum(!is.na(inscripciones$comunidad), na.rm = TRUE)
+MD <- sum(inscripciones$comunidad == "MetaDocencia", na.rm = TRUE)
+
+```
+
+Out of the `r nrow(inscripciones)` who showed interest in the event, `r Comunidad` reported participating as representatives of a community.
+
+```{r}
+
+comunidad <- inscripciones %>% 
+  count(comunidad) %>% 
+  mutate(porcentaje = round(n/sum(n)*100,1))
+
+comunidad %>% 
+  filter(!is.na(comunidad)) %>% 
+  knitr::kable(col.names = c("Community", "N", "%"))
+
+comunidad %>%
+  filter(!is.na(comunidad)) %>% 
+  mutate(comunidad = ifelse(comunidad == "MetaDocencia", comunidad, "Other")) %>% 
+  ggplot(aes(fct_reorder(comunidad, n), n)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("Participants representing a community")+
+  xlab("") +
+  ylab("Number of participants") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal()
+
+
+```
+
+## Accessibility requirements
+
+```{r}
+
+accesibilidad <- inscripciones %>% 
+  mutate(accesibilidad = ifelse(str_detect(accesibilidad, "spañol|nterpretac|raducci|ubtitul"), "Interpretación, traducción, subtitulado al español", accesibilidad)) %>% 
+  count(accesibilidad) %>% 
+  mutate(porcentaje = round(n/sum(n)*100, 1))
+
+espaniol <- accesibilidad %>% 
+  filter(str_detect(accesibilidad, "español")) 
+
+porcentaje_espaniol <- round(espaniol[1,2][[1]]/nrow(inscripciones)*100, 1)
+
+
+
+```
+
+All accessibility requests were related to language accessibility. Out of the `r nrow(inscripciones)` persons who recorded their interest for the event, a total of `r espaniol[1,2][[1]]` (`r porcentaje_espaniol`%) participants requested interpretation, subtitles, and/or translation to Spanish in the case of English materials or talks.
+
+```{r}
+accesibilidad %>% 
+  mutate(accesibilidad = ifelse(is.na(accesibilidad), "No requirements", "Interpretation, translation, or subtitles in Spanish")) %>%  
+  knitr::kable(col.names = c("Accessibility", "N", "%"))
+
+accesibilidad %>%
+  mutate(accesibilidad = ifelse(is.na(accesibilidad), "No requirements", "Interpretation, translation, or subtitles in Spanish")) %>%  
+  ggplot(aes(fct_reorder(accesibilidad, n), n)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("Accessibility requirements from participants")+
+  xlab("") +
+  ylab("Number of participants") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal()
+
+
+```
+
+## How did participants learned about the activity?
+
+```{r}
+
+como_conocieron <- inscripciones %>%
+  mutate(como_conoces = str_to_lower(como_conoces),
+         como_conoces = str_replace(como_conoces, 
+                                    pattern = "por redes sociales \\(facebook, twitter, linkedin\\)", 
+                                    replacement = "por redes sociales\\(facebook\\/twitter\\/linkedin\\)")) %>%
+  select(como_conoces) %>%
+  separate(col = como_conoces, 
+           into= c("conoce1", "conoce2", "conoce3", "conoce4", "conoce5", "conoce6"), sep=",") %>%
+  pivot_longer(
+    cols = conoce1:conoce6,
+    names_to = "col",
+    values_to = "como_conoces"
+  ) %>%
+  mutate(como_conoces = str_trim(como_conoces, side = "both"),
+         como_conoces = str_to_sentence(como_conoces))%>%
+  filter(!is.na(como_conoces)) %>%
+  group_by(como_conoces) %>%
+  summarise(cantidad = n()) %>% 
+  arrange(desc(cantidad)) %>% 
+  mutate(porcentaje = round(cantidad/sum(cantidad)*100, 1))
+
+# Traducción
+como_conocieron <- como_conocieron %>% 
+  mutate(como_conoces = case_match(como_conoces,
+                                   "A través de la web" ~ "Website",
+                                   "Me invitó una persona conocida" ~ "An acquaintance",
+                                   "Por correo electrónico" ~ "Email",
+                                   "Por redes sociales(facebook/twitter/linkedin)" ~ "Social networks - facebook, twitter, linkedin",
+                                   "Por slack" ~ "Slack",
+                                   "Scielo mailing list" ~ "Scielo mailing list",
+                                   "Soy parte del equipo de metadocencia" ~ "MetaDocencia team member")) 
+
+
+porcentaje <- como_conocieron[1,3][[1]] + como_conocieron[2,3][[1]] 
+cantidad <- como_conocieron[1,2][[1]] + como_conocieron[2,2][[1]] 
+act1 <- como_conocieron[1,1][[1]]
+act2 <- como_conocieron[2,1][[1]]
+
+
+
+```
+
+The `r porcentaje`% (n = `r cantidad`) of the participants learned about the activity through `r act1` and `r act2`.
+
+```{r}
+
+como_conocieron %>%
+  ggplot(aes(fct_reorder(como_conoces, cantidad), cantidad)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("How participants found out about the activity")+
+  xlab("") +
+  ylab("Number of participants") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal()
+
+
+
+
+```
+
+## Why are participants interested in this activity?
+
+```{r}
+
+interes <- inscripciones %>%
+  left_join(interes_categoria, by = "interes") %>% 
+  filter(!is.na(categoria)) %>% 
+  group_by(categoria) %>%
+  summarise(cantidad = n()) %>% 
+  arrange(desc(cantidad)) %>% 
+  mutate(porcentaje = round(cantidad/sum(cantidad)*100, 1))
+
+interes <- interes %>% 
+  mutate(categoria = case_match(categoria,
+             "Ampliar el conocimiento acerca de Ciencia Abierta" ~ "Expanding their knowledge about OS",
+             "Adquirir herramientas para mi práctica" ~ "Acquiring tools for their practice",
+             "Generar redes de colaboración regional" ~ "Generating regional colaboration networks",
+             "Trabajo en Ciencia Abierta y/o se vincula con mi investigación" ~ "Working in or reseaching OS",
+             "Promuevo la ciencia abierta" ~ "Promoting OS",
+             "Como acompañamiento para realizar el curso" ~ "Getting help to complete the OS101 course",
+             "Conocer a MetaDocencia" ~ "Getting to know MetaDocencia",
+             "Conocer acerca de datos abiertos" ~ "Knowing about open data",
+             "Conocer casos de aplicación en Latino América" ~ "Knowing about cases of use in LATAM",
+             "Por lo enriquecedor del espacio de intercambio" ~ "Participating in an enriching exchange space",
+             "Prepararme para el workshop de NASA" ~ "Preparing for NASA's workshop"))
+
+
+
+
+porcentaje <- interes[1,3][[1]] + interes[2,3][[1]] + interes[3,3][[1]] 
+cantidad <- interes[1,2][[1]] + interes[2,2][[1]] + interes[3,2][[1]] 
+act1 <- interes[1,1][[1]]
+act2 <- interes[2,1][[1]]
+act3 <- interes[3,1][[1]]
+
+
+```
+
+The `r porcentaje`% (n = `r cantidad`) of the participants manifested being interested in the activity because of `r act1`, `r act2`, and `r act3`.
+
+```{r}
+
+interes %>%
+  ggplot(aes(fct_reorder(categoria, cantidad), cantidad)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("Why participants decided to join")+
+  xlab("") +
+  ylab("Number of participants") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal()
+
+
+```
+
+## What was participation in zoom like?
+
+```{r}
+
+asistentes <- zoom %>% 
+  count(nombre_archivo, nombre2) %>% 
+  mutate(nombre_archivo = str_match(pattern = "\\d{2}_\\d{2}_\\d{4}", string = nombre_archivo)[ , 1]) %>% 
+  mutate(nombre_archivo = str_replace_all(nombre_archivo, pattern = "_", replacement = "-")) %>% 
+  filter(n < 2) %>% 
+  count(nombre_archivo) %>% 
+  mutate(porcentaje = round(n/nrow(inscripciones)*100,1)) 
+
+```
+
+Out of the `r nrow(inscripciones)` participants who signed up, `r n_distinct(zoom$nombre2)` (`r round(n_distinct(zoom$nombre2)/nrow(inscripciones)*100, 1)`%) attended the meetings. 
+
+```{r}
+
+asistentes %>% 
+  knitr::kable(col.names = c("Event", "N", "%"))
+
+
+
+
+```
+
+The mean assistance per event was of `r round(mean(asistentes$n),1)` participants (SD = `r round(sd(asistentes$n),1)`).
+
+```{r}
+
+zoom_tiempo <- aggregate(duracion ~ nombre_archivo + nombre2, data = zoom, FUN = sum)
+
+t <- zoom_tiempo %>%
+  mutate(tiempo_completo = ifelse(duracion >= 54, 1, 0)) %>% 
+    mutate(nombre_archivo = str_match(pattern = "\\d{2}_\\d{2}_\\d{4}", string = nombre_archivo)[ , 1]) %>% 
+  mutate(nombre_archivo = str_replace_all(nombre_archivo, pattern = "_", replacement = "-")) %>% 
+  group_by(nombre_archivo) %>% 
+  summarise(N = n(),
+            tot = sum(tiempo_completo),
+            Media = round(mean(tiempo_completo)*100,1))
+
+t %>% 
+  knitr::kable(col.names = c("Event", "Attendees", "Stayed the hour", "%"))
+```
+
+A mean of `r round(mean(t$Media),1)`% of attendees stayed until the end of the sessions. The mean assistance time was of `r round(mean(zoom_tiempo$duracion, na.rm = TRUE),1)` minutes, with a standard deviation of `r round(sd(zoom_tiempo$duracion, na.rm = TRUE),1)`.  
+
+
+## Insights from the participants' feedback
+
+### Net Promoter Score
+
+```{r}
+
+# Net promoter score
+# Qué tan probable es que el participante recomiende esta actividad a otras personas
+
+NPS <- encuestas %>% 
+  mutate(NPS1 = case_when(recomendar > 8 ~ "Promoter", 
+                          recomendar < 7 ~ "Detractor",
+                          between(recomendar, 7, 8) ~ "Neutral"),
+         NPS2 = case_when(practica > 8 ~ "Promoter", 
+                          practica < 7 ~ "Detractor",
+                          between(practica, 7, 8) ~ "Neutral"))
+
+NPS1_porcentaje <- NPS %>% 
+  count(NPS1) %>% 
+  mutate(porcentaje = n/sum(n)*100)
+
+NPS2_porcentaje <- NPS %>% 
+  count(NPS2) %>% 
+  mutate(porcentaje = n/sum(n)*100)
+
+
+NPS_media <- encuestas %>% 
+  mutate(marca_temporal = floor_date(marca_temporal, "day")) %>% 
+  count(marca_temporal)
+
+NPS1 <- NPS1_porcentaje$porcentaje[[3]] - NPS1_porcentaje$porcentaje[[1]]
+NPS1 <- round(NPS1, 1)
+
+NPS2 <- NPS2_porcentaje$porcentaje[[3]] - NPS2_porcentaje$porcentaje[[1]]
+NPS2 <- round(NPS2, 1)
+
+NPS_media <- round(mean(NPS_media$n), 1)
+
+```
+
+As a measure of participant satisfaction, we report the Net Promoter Score (NPS). After each session, we asked participants to rate on a scale of 1 to 10 how likely they would be to (1) recommend the activity to someone else and (2) use what they learned in their practice. We collected a total of `r nrow(encuestas)` responses, with an average of `r NPS_media` responses per session.
+
+We classified participants into promoters (scores 9-10), who are highly satisfied and very likely to recommend the activity to others; passives or neutrals (scores 7-8), who are somewhat satisfied but may not be as enthusiastic in their recommendations; and detractors (scores 0-6), who are dissatisfied and may actively discourage others from participating.
+
+To calculate the NPS, we subtract the percentage of detractors from the percentage of promoters. The score can range from -100 (if all respondents are detractors) to +100 (if all respondents are promoters).
+
+By doing so, we obtained an NPS of `r NPS1`% for recommending the activity and `r NPS2`% for the likelihood of participants using what they learned in their practice. An NPS above 20% is considered favorable, and above 50% excellent.
+
+### Things to keep
+
+After each meeting, we asked participants to share one thing they liked about the encounter and that they would like to keep. We grouped responses into the following categories:
+
+-   **Multiple perspectives and discussion** includes comments regarding interdisciplinarity, the space to share experiences and perspectives, and how enriching different points of view can be.
+
+-   **Format and presentation** includes comments regarding the participative format, how the sessions were led, and the materials that were shared, such as slides and shared documents.
+
+-   **Community** includes comments that explicitly mentioned the word "community," but also those highlighting the importance of a shared experience.
+
+-   **Content** includes comments referring specifically to the information that was shared during the meeting.
+
+-   **Latin American context** and **Spanish language** includes comments that explicitly mentioned these subjects.
+
+A participant's response may fall under more than one category when they include various subjects.
+
+```{r}
+
+mantener <- encuestas_categorias %>% 
+  filter(!is.na(para_mantener_categoria)) %>% 
+  separate(para_mantener_categoria, sep = ",",
+           into = c("mantener1", "mantener2", "mantener3", "mantener4")) %>% 
+  pivot_longer(
+    cols = mantener1:mantener4,
+    names_to = "col",
+    values_to = "para_mantener_categoria") %>%
+  count("categoria" = para_mantener_categoria) %>% 
+  filter(!is.na(categoria)) %>% 
+  mutate(porcentaje = round(n/nrow(encuestas)*100,1)) %>% 
+  arrange(desc(porcentaje))
+
+```
+
+Out of the `r nrow(encuestas)` responses we got, `r mantener$porcentaje[[1]]`% (`r mantener$n[[1]]` participants) highlighted aspects related to `r mantener$categoria[[1]]`; `r mantener$porcentaje[[2]]`% (`r mantener$n[[2]]` participants) focus on `r mantener$categoria[[2]]`; and `r mantener$porcentaje[[3]]`% (`r mantener$n[[3]]` participants) emphasized the `r mantener$categoria[[3]]` aspect of the activity. These were the most frequent categories.
+
+```{r}
+
+mantener %>%
+  ggplot(aes(fct_reorder(categoria, n), n)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("Things to keep!")+
+  xlab("") +
+  ylab("Number of participants") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal()
+
+```
+
+As a whole, we conclude that the attendees appreciated the diverse perspectives and engaging discussions, which was possible due to the dynamic format we used. Spaces of exchange such as this, foster a sense of community, specially when we contextualize the content to the participants' region and language, all contributing to a rich and valuable experience.
+
+### Things to improve
+
+After each meeting, we asked participants to share suggestions they have to improve the encounters. We grouped responses into the following categories:
+
+-   **Longer meetings** includes suggestions to extend the duration of the meetings.
+
+-   **Organize interactions** includes comments regarding how the attendees participated and how this can be distracting in some cases.
+
+-   **Translate the content that is in English** includes comments regarding the content's language as a barrier.
+
+-   **Extend the discussion** refers to the suggestion of making other channels of communication available to discuss these subjects asynchronously, through the use of the share document, and also to the suggestion of participating in breakout rooms.
+
+-   **Limit hipertextuality** refers to the amount of links and externar references in the material.
+
+-   **Present a map of the subject**, **Relate reading materials to Latin America**, and **Expand on the applicability across fields** where mentioned explicitely.
+
+A participant's response may fall under more than one category when they include various subjects.
+
+```{r}
+
+mejorar <- encuestas_categorias %>% 
+  filter(!is.na(para_mejorar_categoria)) %>% 
+  separate(para_mejorar_categoria, sep = ",",
+           into = c("mejorar1", "mejorar2", "mejorar3", "mejorar4")) %>% 
+  pivot_longer(
+    cols = mejorar1:mejorar4,
+    names_to = "col",
+    values_to = "para_mejorar_categoria") %>%
+  count("categoria" = para_mejorar_categoria) %>% 
+  filter(!is.na(categoria)) %>% 
+  mutate(porcentaje = round(n/nrow(encuestas)*100,1)) %>% 
+  arrange(desc(porcentaje))
+
+```
+
+Out of the `r nrow(encuestas)` responses we got, `r mejorar$porcentaje[[1]]`% (`r mejorar$n[[1]]` participants) suggested `r mejorar$categoria[[1]]`; `r mejorar$porcentaje[[2]]`% (`r mejorar$n[[2]]` participants) asked to better `r mejorar$categoria[[2]]`; and `r mejorar$porcentaje[[3]]`% (`r mejorar$n[[3]]` participants) emphasized the need to `r mejorar$categoria[[3]]`. These were the most frequent categories.
+
+```{r}
+
+mantener %>%
+  ggplot(aes(fct_reorder(categoria, n), n)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("Things to improve!")+
+  xlab("") +
+  ylab("Number of participants") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal()
+
+```
+
+Taken together, we conclude that the suggestions for improvement are mostly focused on enhancing the interactive elements through extending meeting duration, broadening discussions to additional platforms, providing translations for English content, delving into the relevance across various disciplines, and integrating reading materials relevant to the Latin American context.
+
+## Joined slack!
+
+```{r}
+
+Nombre <- inscripciones %>% 
+  mutate(Nombre = str_c(nombre, apellido, sep = " ")) %>% 
+  stringdist_join(
+    select(miembros_slack, Nombre, email),
+    by = 'Nombre',
+    mode = 'semi',
+    method = 'lv',
+    max_dist = 3,
+    ignore_case = TRUE,
+    distance_col = 'distance')
+
+Mail <- inscripciones %>% 
+  mutate(Nombre = str_c(nombre, apellido, sep = " ")) %>% 
+  stringdist_join(
+    select(miembros_slack, Nombre, email),
+    by = 'email',
+    mode = 'semi',
+    method = 'lv',
+    max_dist = 3,
+    ignore_case = TRUE,
+    distance_col = 'distance')
+
+Tabla_completa <- bind_rows(Nombre, Mail) 
+
+Tabla_completa <- distinct(Tabla_completa)
+
+canales <- read_csv("data/slack/slack_canal.csv") %>% 
+  filter(Nombre == "nasa-tops")
+
+
+```
+
+Out of the `r nrow(inscripciones)` who signed up for the events, `r nrow(Tabla_completa)` joined our slack!.
+Currently, the #nasa-tops channel has `r canales["N.º total de miembros"][[1]]` members, `r round(canales["N.º total de miembros"][[1]]/nrow(inscripciones)*100,1)`% of the total of participants who signed up for Misión de Exploración, out of which `r canales["Miembros que reaccionaron"][[1]]` (`r round(canales["Miembros que reaccionaron"][[1]]/nrow(inscripciones)*100,1)`%) actively participate in the channel.  
+
