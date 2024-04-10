@@ -2,7 +2,7 @@
 
 # Exploration Mission toward Open Science
 
-## Group Introduction to NASA TOPS Content
+## Introduction to NASA TOPS Content
 
 In 2024, we will begin teaching principles of Open Science in Spanish through several-week virtual cohorts. To prepare, we invited all members of the MetaDocencia community to study together the original course content in English from the [Open Science 101 course](https://openscience101.org/), part of the Transform to Open Science (TOPS) initiative organized by NASA.
 
@@ -27,7 +27,7 @@ All our materials follow this [license](https://github.com/MetaDocencia/docs/blo
 
 # Misión de Exploración hacia la Ciencia Abierta
 
-## Introducción del Grupo al Contenido de NASA TOPS
+## Introducción al Contenido de NASA TOPS
 
 En 2024, comenzaremos a enseñar los principios de la Ciencia Abierta en español a través de cohortes virtuales de varias semanas. Para prepararnos, invitamos a todos los miembros de la comunidad MetaDocencia a estudiar juntos el contenido original del curso en inglés de [Open Science 101](https://openscience101.org/), parte de la iniciativa Transform to Open Science (TOPS) organizada por NASA.
 
@@ -37,7 +37,7 @@ En este documento, presentamos información sobre los participantes y los coment
 
 Si desea sugerir cambios o brindar comentarios, puede hacerlo de dos maneras diferentes:
 
-- **Crear un problema en este mismo repositorio:** De esta manera, su contribución es pública y facilita el seguimiento de las modificaciones a realizar. También permite que otros colaboradores agreguen sus contribuciones a la misma sugerencia.
+- **Crear un issue en este mismo repositorio:** De esta manera, su contribución es pública y facilita el seguimiento de las modificaciones a realizar. También permite que otros colaboradores agreguen sus contribuciones a la misma sugerencia.
 - **Enviando un correo electrónico a jesica.formoso@metadocencia.org** 
 
 Todas las personas que participen y contribuyan a este repositorio deben adherirse a nuestras [pautas comunitarias](https://www.metadocencia.org/pdc/) y seguir esta [guía de contribución](https://github.com/MetaDocencia/docs/blob/master/CONTRIBUIR.md) sobre cómo y dónde colaborar con MetaDocencia.
