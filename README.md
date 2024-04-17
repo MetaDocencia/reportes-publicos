@@ -4,9 +4,9 @@
 
 Cada reporte está organizado en una carpeta :file_folder: que contiene todos los materiales relacionados con el mismo. Esto facilita la búsqueda y acceso a la información que necesitas.
 
-Todos los individuos que participan o contribuyen a este repositorio deben adherirse a nuestras [pautas de convivencia](https://www.metadocencia.org/pdc/) y seguir las [guías de contribución](https://github.com/MetaDocencia/docs/blob/master/CONTRIBUIR.md) de MetaDocencia :apple:. Si estás interesado en colaborar, consulta cómo y dónde puedes contribuir en nuestra documentación.
+Todos los individuos que participan o contribuyen a este repositorio deben adherirse a nuestras [pautas de convivencia](https://www.metadocencia.org/pdc/) y seguir las [guías de contribución](https://github.com/MetaDocencia/docs/blob/master/CONTRIBUIR.md) de MetaDocencia :apple:
 
-Todos nuestros materiales están protegidos bajo la licencia [CC BY-NC 4.0](https://github.com/MetaDocencia/docs/blob/master/LICENCIA.md).
+Todos nuestros materiales están publicados bajo la licencia [CC BY-NC 4.0](https://github.com/MetaDocencia/docs/blob/master/LICENCIA.md).
 
 ¡Gracias por tu interés! Si tienes alguna pregunta o sugerencia, no dudes en contactarnos.
 
@@ -19,9 +19,9 @@ Todos nuestros materiales están protegidos bajo la licencia [CC BY-NC 4.0](http
 
 Each report is organized in a folder :file_folder: containing all related materials. This facilitates searching for and accessing the information you need.
 
-All individuals who participate or contribute to this repository must adhere to our [code of conduct](https://www.metadocencia.org/en/pdc/) and follow the [contribution guidelines](https://github.com/MetaDocencia/docs/blob/master/CONTRIBUIR.md) of MetaDocencia :apple:. If you are interested in contributing, please see how and where to collaborate in our documentation.
+All individuals who participate or contribute to this repository must adhere to our [code of conduct](https://www.metadocencia.org/en/pdc/) and follow the [contribution guidelines](https://github.com/MetaDocencia/docs/blob/master/CONTRIBUIR.md) of MetaDocencia :apple:
 
-All our materials are protected under the [CC BY-NC 4.0](https://github.com/MetaDocencia/docs/blob/master/LICENCIA.md) license.
+All our materials are published under the [CC BY-NC 4.0](https://github.com/MetaDocencia/docs/blob/master/LICENCIA.md) license.
 
 Thank you for your interest! If you have any questions or suggestions, feel free to contact us.
 
