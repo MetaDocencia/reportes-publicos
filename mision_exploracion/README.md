@@ -1,30 +1,5 @@
 ![](banner.jpg)
 
-# Exploration Mission toward Open Science
-
-## Introduction to NASA TOPS Content
-
-In 2024, we will begin teaching principles of Open Science in Spanish through several-week virtual cohorts. To prepare, we invited all members of the MetaDocencia community to study together the original course content in English from the [Open Science 101 course](https://openscience101.org/), part of the Transform to Open Science (TOPS) initiative organized by NASA.
-
-We conducted several meetings where we reviewed different topics that make up the world of Open Science: its core ideas, the most frequent tools, how to handle open data and code, and much more. We incorporated a local perspective, considering situations and examples from our experiences in Latin America.
-
-In this document, we present information about the participants and the feedback we have received from them to analyze the impact, reach, and possibilities for improvement of this activity. The purpose of this document is to make as much information as possible available to anyone who needs or wants to access it. It is not a final and closed version. Therefore, at times, you may encounter redundant information and uninformative graphs or tables.
-
-If you wish to suggest changes or provide feedback, you can do so in two different ways:
-
-- **Create an issue in this same repository:** In this way your contribution is public and it facilitates tracking the modifications to be made. It also enables other collaborators to add their contributions to the same suggestion.
-- **By emailing jesica.formoso@metadocencia.org** 
-
-All individuals who participate and contribute to this repository must adhere to our [community guidelines](https://www.metadocencia.org/en/pdc/) and follow these [contribution guide](https://github.com/MetaDocencia/docs/blob/master/CONTRIBUIR.md) on how and where to collaborate with MetaDocencia.
-
-You can download the final report as an [HTML file](https://github.com/MetaDocencia/reportes-publicos/blob/main/mision_exploracion/Misi%C3%B3n%20exploraci%C3%B3n.html). You can also find the code we used in this repository but with dummy databases to protect the participants' privacy and data.  
-
-### License
-
-All our materials follow this [license](https://github.com/MetaDocencia/docs/blob/master/LICENCIA.md).
-
-------------------
-
 # Misión de Exploración hacia la Ciencia Abierta
 
 ## Introducción al Contenido de NASA TOPS
@@ -47,3 +22,28 @@ Puede descargar el informe final como un [archivo HTML](https://github.com/MetaD
 ### Licencia
 
 Todos nuestros materiales siguen esta [licencia](https://github.com/MetaDocencia/docs/blob/master/LICENCIA.md).
+
+--------------------------------
+
+# Exploration Mission toward Open Science
+
+## Introduction to NASA TOPS Content
+
+In 2024, we will begin teaching principles of Open Science in Spanish through several-week virtual cohorts. To prepare, we invited all members of the MetaDocencia community to study together the original course content in English from the [Open Science 101 course](https://openscience101.org/), part of the Transform to Open Science (TOPS) initiative organized by NASA.
+
+We conducted several meetings where we reviewed different topics that make up the world of Open Science: its core ideas, the most frequent tools, how to handle open data and code, and much more. We incorporated a local perspective, considering situations and examples from our experiences in Latin America.
+
+In this document, we present information about the participants and the feedback we have received from them to analyze the impact, reach, and possibilities for improvement of this activity. The purpose of this document is to make as much information as possible available to anyone who needs or wants to access it. It is not a final and closed version. Therefore, at times, you may encounter redundant information and uninformative graphs or tables.
+
+If you wish to suggest changes or provide feedback, you can do so in two different ways:
+
+- **Create an issue in this same repository:** In this way your contribution is public and it facilitates tracking the modifications to be made. It also enables other collaborators to add their contributions to the same suggestion.
+- **By emailing jesica.formoso@metadocencia.org** 
+
+All individuals who participate and contribute to this repository must adhere to our [community guidelines](https://www.metadocencia.org/en/pdc/) and follow these [contribution guide](https://github.com/MetaDocencia/docs/blob/master/CONTRIBUIR.md) on how and where to collaborate with MetaDocencia.
+
+You can download the final report as an [HTML file](https://github.com/MetaDocencia/reportes-publicos/blob/main/mision_exploracion/Misi%C3%B3n%20exploraci%C3%B3n.html). You can also find the code we used in this repository but with dummy databases to protect the participants' privacy and data.  
+
+### License
+
+All our materials follow this [license](https://github.com/MetaDocencia/docs/blob/master/LICENCIA.md).
