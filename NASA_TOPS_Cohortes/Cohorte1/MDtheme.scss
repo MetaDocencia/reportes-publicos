@@ -1,0 +1,94 @@
+
+/*-- scss:defaults --*/
+$theme-black: #000000;
+$theme-red: #c83737;
+$theme-blue: #00506f;
+$theme-white: #ffffff; 
+$theme-grey: #404040;
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&family=Open+Sans:wght@400&display=swap');
+
+$font-size-root: 16px;
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: $font-size-root;
+  color: $theme-black;
+  line-height: 1.15;
+  margin: 0;
+  padding: 0;
+}
+
+$body-bg: $theme-white;
+$body-color: $theme-black;
+$link-color: $theme-blue;
+
+$font-family-sans-serif: 'Barlow', sans-serif;
+
+
+
+/*-- scss:rules --*/
+
+h1 {
+  font-family: $font-family-sans-serif;
+  color: $theme-grey;
+  font-weight: bold;
+  font-size: 49;
+}
+
+h2 {
+  font-family: $font-family-sans-serif;
+  color: $theme-red;
+  font-weight: bold;
+  font-size: 25;
+}
+
+h3 {
+  font-family: $font-family-sans-serif;
+  color: $theme-blue;
+  font-size: 17;
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: $font-size-root;
+  color: $theme-black;
+  margin: 10px 0;
+  line-height: 1.20;
+}
+
+.toc {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #404040;
+  line-height: 1.15;
+  margin: 20px 0;
+
+  h2 {
+    font-family: 'Barlow', sans-serif;
+    font-size: 19px;
+    font-weight: bold;
+    color: #c83737;
+  }
+
+  ul, ol {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin: 5px 0;
+    font-family: 'Open Sans', sans-serif;
+    color: #404040;
+  }
+
+  a {
+    text-decoration: none;
+    color: #00506f;
+
+    &:hover {
+      color: #c83737;
+    }
+  }
+}
