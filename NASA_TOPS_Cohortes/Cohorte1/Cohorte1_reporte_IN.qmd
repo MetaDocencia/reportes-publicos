@@ -57,6 +57,8 @@ source("../_intervalo_confianza.R")
 inscripciones <- read_csv("data/inscripciones_total.csv")
 participantes <- read_csv("data/inscripciones_participantes.csv")
 investigacion <- read_csv("data/inscripciones_investigacion.csv")
+accesibilidad <- read_csv("data/accesibilidad.csv")
+grupos <- read_csv("data/grupos_subrepresentados.csv")
 
 # Formularios de evaluación
 
@@ -354,19 +356,6 @@ n_educ %>%
 ```{r}
 formacion <- participantes %>% 
   filter(!is.na(area_formacion)) %>% 
-    mutate(area_formacion = case_when(str_detect(area_formacion, "Exactas") ~ "Exact and Natural Sciences",
-                                    str_detect(area_formacion, "Sociales") ~ "Social Sciences",
-                                    str_detect(area_formacion, "Económicas") ~ "Social Sciences",
-                                    str_detect(area_formacion, "Educación") ~ "Social Sciences",
-                                    str_detect(area_formacion, "ambientales") ~ "Exact and Natural Sciences",
-                                    str_detect(area_formacion, "de la Salud") ~ "Health Sciences",
-                                    str_detect(area_formacion, "Humanidades") ~ "Humanities",
-                                    str_detect(area_formacion, "Arquitectura") ~ "Technology and Architecture",
-                                    str_detect(area_formacion, "Ingenierías") ~ "Engineering",
-                                    str_detect(area_formacion, "datos|Datos") ~ "Data Science and Analysis",
-                                    str_detect(area_formacion, "gerencial") ~ "Managerial Information Management",
-                                    TRUE ~ as.character(area_formacion))) %>% 
-
   count(area_formacion) %>% 
   mutate(por = round(n/sum(n)*100,1)) %>%
     mutate(area_formacion = fct_reorder(area_formacion,n)) %>% 
@@ -472,47 +461,20 @@ participantes %>%
 :::
 
 ```{r}
-grupos <-  participantes %>%
-  filter(!is.na(comunidad),
-         !str_detect(comunidad, "ingun|No estoy identifi|madre|Madre|sexual"))
 
-grupos2 <- grupos %>%
-  select(comunidad) %>%
-  separate(col = comunidad, 
-           into= c("comunidad1", "comunidad2", "comunidad3", "comunidad4", "comunidad5", "comunidad6"), sep=",") %>%
-  pivot_longer(
-    cols = comunidad1:comunidad6,
-    names_to = "col",
-    values_to = "comunidad"
-  ) %>%
-  mutate(comunidad = str_trim(comunidad, side = "both"),
-         comunidad = str_to_sentence(comunidad))%>%
-  filter(!is.na(comunidad),
-         comunidad != "") %>%
-  count(comunidad) %>%
-  mutate(comunidad = fct_recode(comunidad, "Women and minority genders" = "Mujeres y géneros minoritarios",
-  "People from disadvantaged socioeconomic backgrounds" = "Personas de origen socioeconómico desfavorecido",
-  "Indigenous peoples" = "Pueblos originarios",
-  "People with disabilities" = "Personas con discapacidad",
-  "Afro-descendant population" = "Población afrodescendiente",
-  "Sexual dissidence" = "Disidencia sexual",
-  "Mother" = "Madre",
-  "University administrative staff" = "Personal de gestión administrativa en la universidad y docente")) %>%
-    mutate(por = round(n/sum(n)*100,1)) %>%
-  arrange(desc(n))
 
-plot.height = n_distinct(grupos2$comunidad)*0.5+0.5
+plot.height = n_distinct(grupos$comunidad)*0.5+0.5
   
 ```
 
-### Are they members of groups underrepresented in science? (n = `r nrow(grupos)`, `r round(nrow(grupos)/nrow(inscripciones)*100,1)`%)
+### Are they members of groups underrepresented in science? (n = `r sum(grupos$n)`, `r round(sum(grupos$n)/nrow(inscripciones)*100,1)`%)
 
-Among the `r nrow(grupos)` persons (`r round(nrow(grupos)/nrow(inscripciones)*100,1)`%) who answered this question, `r grupos2$por[1]`% (n = `r grupos2$n[1]`) belongs to the category `r str_to_lower(grupos2$comunidad[1])`, the `r grupos2$por[2]`% (n = `r grupos2$n[2]`) belongs to `r str_to_lower(grupos2$comunidad[2])` and the `r grupos2$por[3]`% (n = `r grupos2$n[3]`) to `r str_to_lower(grupos2$comunidad[3])`. The remaining `r sum(grupos2$por[4:nrow(grupos2)])`% (n = `r sum(grupos2$n[4:nrow(grupos2)])`) identify as belonging to the following groups: `r str_to_lower(str_c(grupos2$comunidad[4:nrow(grupos2)], collapse = ", "))`.
+Among the `r sum(grupos$n)` persons (`r round(sum(grupos$n)/nrow(inscripciones)*100,1)`%) who answered this question, `r grupos$por[1]`% (n = `r grupos$n[1]`) belongs to the category `r str_to_lower(grupos$comunidad[1])`, the `r grupos$por[2]`% (n = `r grupos$n[2]`) belongs to `r str_to_lower(grupos$comunidad[2])` and the `r grupos$por[3]`% (n = `r grupos$n[3]`) to `r str_to_lower(grupos$comunidad[3])`. The remaining `r sum(grupos$por[4:nrow(grupos)])`% (n = `r sum(grupos$n[4:nrow(grupos)])`) identify as belonging to the following groups: `r str_to_lower(str_c(grupos$comunidad[4:nrow(grupos)], collapse = ", "))`.
 
 #### Figure 10. Underrepresented groups in technical and scientific contexts that participants identify with. 
 
 ```{r, fig.width=7, fig.height=plot.height}
-grupos2 %>%
+grupos %>%
   ggplot(aes(fct_reorder(comunidad, por), por)) +
   geom_bar(stat = "identity",fill="#c83737") +
   ggtitle("")+
@@ -533,37 +495,23 @@ The total percentage exceeds 100% because participants were asked to choose all 
 
 ```{r}
 
-req_acc <- participantes %>%
-  mutate(accesibilidad = case_when(str_detect(accesibilidad, "-|semillero|Cuento con los medios necesarios|Ninguna|^No$|N/A|No tengo inconveniente|Cada una de las opciones") ~ NA,
-                                   str_detect(accesibilidad, "clara|voz|transmisión") ~ "Speak with a clear and calm voice",
-                                   str_detect(accesibilidad, "rabac|video|audiovisual|diferido") ~ "Record and sharing the video",
-                                   str_detect(accesibilidad, "escrito|escrita") ~ "Provide written information",
-                                   str_detect(accesibilidad, "subtitulos") ~ "Provide live captions",
-                                   str_detect(accesibilidad, "internet") ~ "Have a stable internet connection",
-                                   TRUE ~ NA))  %>%   
-  mutate(accesibilidad = str_replace(accesibilidad, "\\.", "")) %>% 
-  filter(!is.na(accesibilidad)) 
-  
-req_acc2 <- req_acc %>%
-  count(accesibilidad) %>% 
-  mutate(por = n/sum(n)*100) %>% 
-  mutate(accesibilidad = fct_reorder(accesibilidad,n),
-         accesibilidad_min = str_to_lower(accesibilidad)) %>%
-  arrange(desc(n))
 
-plot.height = n_distinct(req_acc2$accesibilidad)*0.5+0.5
+  
+
+
+plot.height = n_distinct(accesibilidad$accesibilidad)*0.5+0.5
 
 ```
 
-### What are their accessibility requirements? (n = `r nrow(req_acc)`, `r round(nrow(req_acc)/nrow(inscripciones)*100,1)`%)
+### What are their accessibility requirements? (n = `r sum(accesibilidad$n)`, `r round(sum(accesibilidad$n)/nrow(inscripciones)*100,1)`%)
 
-This question was completed by `r nrow(req_acc)` persons, a `r round(nrow(req_acc)/nrow(inscripciones)*100,1)`% of the total of participants. Among those who answered, the biggest request is `r req_acc2$accesibilidad_min[1]` (`r sprintf('%.1f', req_acc2$por[1])`%, n = `r req_acc2$n[1]`), followed by `r  req_acc2$accesibilidad_min[2]` (`r sprintf('%.1f', req_acc2$por[2])`%, n = `r req_acc2$n[2]`). The remaining `r sprintf('%.1f', sum(req_acc2$por[4:nrow(req_acc2)]))`% (n = `r sum(req_acc2$n[4:nrow(req_acc2)])`) corresponds to people that requested: `r str_c(req_acc2$accesibilidad_min[4:nrow(req_acc2)], collapse = ", ")`.
+This question was completed by `r sum(accesibilidad$n)` persons, a `r round(sum(accesibilidad$n)/nrow(inscripciones)*100,1)`% of the total of participants. Among those who answered, the biggest request is `r accesibilidad$accesibilidad_min[1]` (`r sprintf('%.1f', accesibilidad$por[1])`%, n = `r accesibilidad$n[1]`), followed by `r  accesibilidad$accesibilidad_min[2]` (`r sprintf('%.1f', accesibilidad$por[2])`%, n = `r accesibilidad$n[2]`). The remaining `r sprintf('%.1f', sum(accesibilidad$por[4:nrow(accesibilidad)]))`% (n = `r sum(accesibilidad$n[4:nrow(accesibilidad)])`) corresponds to people that requested: `r str_c(accesibilidad$accesibilidad_min[4:nrow(accesibilidad)], collapse = ", ")`.
 
 #### Figure 11. Accessibility requirements by participants. 
 
 
 ```{r, fig.width=7, fig.height=plot.height}
-req_acc2  %>% 
+accesibilidad  %>% 
   ggplot(aes(accesibilidad, por)) +
   geom_bar(stat = "identity",fill="#c83737") +
   ggtitle("")+
@@ -764,7 +712,7 @@ porcentaje <- importancia2 %>%
               tally() %>%
               mutate(p = n/sum(n)) %>%
               ungroup() %>%
-  mutate(etiqueta = ifelse(p < .059, NA, p))
+  mutate(etiqueta = ifelse(p < .059, NA, round(p,2)))
 
 Medidas_ordenado <- porcentaje %>% 
   filter(Valor == "Muy importante") %>% 
@@ -930,7 +878,7 @@ publicacion <- publicacion[rowSums(is.na(publicacion)) != ncol(publicacion), ]
 
 ```
 
-The final survey was completed by `r nrow(encuesta_final)` participants (`r sprintf('%.1f', nrow(encuesta_final)/nrow(inscripciones)*100)`% of the people that signed up and `r sprintf('%.1f', nrow(encuesta_final)/n_distinct(zoom_tiempo$Nombre_corregido)*100)`% of the people that attendeed the zoom meetings).
+The final survey was completed by `r nrow(publicacion)` participants (`r sprintf('%.1f', nrow(publicacion)/nrow(inscripciones)*100)`% of the people that signed up and `r sprintf('%.1f', nrow(publicacion)/n_distinct(zoom_tiempo$Nombre_corregido)*100)`% of the people that attendeed the zoom meetings).
 
 
 ### What is their knowledge about open publishing after having completed the Cohort training? (n = `r nrow(publicacion)`, `r round(nrow(publicacion)/nrow(inscripciones)*100,1)`%)
@@ -1107,7 +1055,7 @@ porcentaje <- importancia2 %>%
               tally() %>%
               mutate(p = n/sum(n)) %>%
               ungroup() %>%
-  mutate(etiqueta = ifelse(p < .059, NA, p))
+  mutate(etiqueta = ifelse(p < .059, NA, round(p,2)))
 
 Medidas_ordenado <- porcentaje %>% 
   filter(Valor == "Muy importante") %>% 
@@ -1373,7 +1321,7 @@ evaluaciones %>%
   geom_line(size = 1, color = "#C83737") +
   labs(x = "# Meeting", y = "Number of participants",
        title = "Number of assessments completed", color = "") +
-  ylim(0,50) +
+  ylim(0,70) +
  theme_minimal(base_size = base_size) 
 
 ```
