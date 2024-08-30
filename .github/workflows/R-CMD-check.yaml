@@ -22,6 +22,6 @@ jobs:
         run: Rscript -e 'install.packages(c("googlesheets4", "googledrive", "dplyr", "tidyr", "lubridate"))'
       - name: Run insignias R script
         run: |
-          source('NASA_TOPS_Cohortes/Cohorte2/insignias.R')
+          source('R/evaluaciones_cohorte.R')
         shell: Rscript {0}
 
