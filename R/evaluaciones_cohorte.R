@@ -85,7 +85,7 @@ procesar_forms <- function() {
   # Eliminar los registros duplicados para la misma persona en el mismo encuentro 
   # (si respondieron más de una vez)
   Eval <- Eval %>%
-    distinct(orcid, email, evaluacion, .keep_all = TRUE)
+    distinct(orcid, email, evaluacion, .keep_all = TRUE) 
   
   # Generar planilla con las personas en Eval que no están presentes en datos_inscripcion
   # usando ORCID e email. 
@@ -101,6 +101,19 @@ procesar_forms <- function() {
                 names_from = evaluacion,
                 values_from = n,
                 values_fill = list(n = 0)) %>%
+    group_by(orcid) %>%
+    summarise(
+      apellido = first(apellido), 
+      nombre = first(nombre),
+      email = first(email),  
+      E1 = max(E1),  
+      E2 = max(E2),
+      E3 = max(E3),
+      E4 = max(E4),
+      E5 = max(E5)
+    ) %>%
+    ungroup() %>% 
+    distinct(.keep_all = TRUE) %>% 
     rowwise() %>%
     mutate(forms_completados = sum(c_across(matches("E\\d"))))
   
