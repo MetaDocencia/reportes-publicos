@@ -8,11 +8,10 @@ library(stringr)
 
 # for googledrive
 drive_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
-drive_auth()
+
 
 # for googlesheets4
 gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
-gs4_auth()
 
 
 # Funcion para procesar las respuestas de los formularios
