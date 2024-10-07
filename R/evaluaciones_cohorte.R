@@ -3,13 +3,17 @@ library(googledrive)
 library(tidyr)
 library(dplyr)
 library(lubridate)
+library(stringr)
 
 
 # for googledrive
 drive_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
+drive_auth()
 
 # for googlesheets4
 gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
+gs4_auth()
+
 
 # Funcion para procesar las respuestas de los formularios
 procesar_forms <- function() {
@@ -31,6 +35,7 @@ procesar_forms <- function() {
   # Datos de personas inscriptas a la cohorte actual
   datos_inscripcion <- read_sheet(cohorte_actual$form_inscripcion)[c(2,6)]
   names(datos_inscripcion) <- c("email", "orcid")
+  datos_inscripcion$email <- str_to_lower(datos_inscripcion$email)
   
   # Planilla para almacenar los resultados de esta función
   hoja_calculo = cohorte_actual$form_aprobados
@@ -70,7 +75,7 @@ procesar_forms <- function() {
  
   # Crear la columna 'email' usando 'email' o 'correo_viejo' si 'email' es NA
   Eval <- Eval %>%
-    mutate(email = if_else(is.na(email), correo_viejo, email))
+    mutate(email = str_to_lower(if_else(is.na(email), correo_viejo, email)))
   
   # Filtrar los aprobados con puntaje > 6 luego del comienzo de la última cohorte
   Eval <- Eval %>%
@@ -91,13 +96,13 @@ procesar_forms <- function() {
   # usando ORCID e email. 
   no_encontrados <- Eval %>%
     anti_join(datos_inscripcion, by = c("orcid", "email")) %>%
-    select(nombre, apellido, email, orcid)
+    select(nombre, apellido, email, orcid, evaluacion)
   
   # Generar form_completos 
   form_completos <- Eval %>%
     anti_join(no_encontrados, by = c("orcid", "email")) %>%
-    count(apellido, nombre, email, orcid, evaluacion) %>%
-    pivot_wider(id_cols = c("apellido", "nombre", "email", "orcid"),
+    count(timestamp, apellido, nombre, email, orcid, evaluacion) %>%
+    pivot_wider(id_cols = c("timestamp","apellido", "nombre", "email", "orcid"),
                 names_from = evaluacion,
                 values_from = n,
                 values_fill = list(n = 0)) %>%
@@ -110,12 +115,39 @@ procesar_forms <- function() {
       E2 = max(E2),
       E3 = max(E3),
       E4 = max(E4),
-      E5 = max(E5)
+      E5 = max(E5),
+      fecha = last(timestamp)
     ) %>%
     ungroup() %>% 
     distinct(.keep_all = TRUE) %>% 
     rowwise() %>%
-    mutate(forms_completados = sum(c_across(matches("E\\d"))))
+    mutate(forms_completados = sum(c_across(matches("E\\d")))) %>% 
+    select(orcid, apellido, nombre, email, E1, E2, E3, E4, E5, forms_completados, fecha)
+  
+  # Crea un vector con los nombres de los encuentros
+  encuentros <- c("Encuentro 1", "Encuentro 2", "Encuentro 3", "Encuentro 4", "Encuentro 5")
+  
+  # Aplica la función a cada fila para identificar los encuentros faltantes
+  form_completos$evaluaciones_faltantes <- apply(form_completos[, c("E1", "E2", "E3", "E4", "E5")], 1, function(fila) {
+    faltantes <- encuentros[fila == 0]  # Selecciona los encuentros donde el valor es 0
+    if (length(faltantes) == 0) {
+      return(NA)  # Si no faltan evaluaciones, devuelve NA
+    } else {
+      return(paste(faltantes, collapse = ", "))  # Combina los nombres separados por comas
+    }
+  })
+  
+
+  # levanta los datos para la planilla integrada de la cohorte actual
+  planilla_integrada <- read_sheet(cohorte_actual$planilla_integrada) %>% 
+    select(orcid = ORCID, captura = Captura) %>% 
+    mutate(orcid = as.character(orcid),
+           captura = ifelse(captura == "Si", 1, 0))
+  
+  # Agregar a form_completos si la persona cuenta o no con la captura del MOOC. 
+  form_completos <- form_completos %>% 
+    left_join(planilla_integrada, by = "orcid") 
+
   
   write_sheet(form_completos, 
               ss = hoja_calculo,
@@ -148,6 +180,33 @@ procesar_forms <- function() {
     summarise(id_unico = sum(Aprobado)) %>% 
     write_sheet(ss = hoja_calculo,
                 sheet = "Aprobados_id_unico")
+  
+  # Plantilla con información acerca de cuántas personas completaron
+  # cuántos formularios y cuantos enviaron captura
+  form_completos %>%
+    pivot_longer(cols = matches("E\\d"),
+                 names_to = "Formulario",
+                 values_to = "Aprobado") %>%
+    group_by(orcid) %>% 
+    summarise(formularios_aprobados = sum(Aprobado)) %>%
+    left_join(planilla_integrada, by = "orcid") %>% 
+    group_by(formularios_aprobados) %>% 
+    summarise(n_forms = n(),
+              n_capturas = sum(captura, na.rm = TRUE)) %>% 
+    write_sheet(ss = hoja_calculo,
+                sheet = "Aprobados_por_persona")
+  
+  
+  # Registrar horario de última actualización
+  # Levantar hora actual
+  ultima_actualizacion <- data.frame(timestamp = Sys.time())
+  
+  # Escribir la timestamp a una nueva hoja llamada "ultima_actualizacion"
+  ultima_actualizacion %>% 
+    write_sheet(
+    ss = hoja_calculo, 
+    sheet = "Ultima_actualizacion"
+  )
   
   
 }
