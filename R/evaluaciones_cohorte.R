@@ -198,7 +198,7 @@ procesar_forms <- function() {
   
   # Registrar horario de última actualización
   # Levantar hora actual
-  ultima_actualizacion <- data.frame(timestamp = Sys.time())
+  ultima_actualizacion <- data.frame(timestamp = with_tz(Sys.time(), tzone = "America/Argentina/Buenos_Aires"))
   
   # Escribir la timestamp a una nueva hoja llamada "ultima_actualizacion"
   ultima_actualizacion %>% 
