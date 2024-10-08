@@ -158,7 +158,9 @@ procesar_forms <- function() {
   
   # Agregar a form_completos si la persona cuenta o no con la captura del MOOC. 
   form_completos <- form_completos %>% 
-    left_join(planilla_integrada, by = "orcid") 
+    left_join(planilla_integrada, by = "orcid") %>% 
+    select(apellido, nombre, email, orcid, E1:E5, forms_completados, fecha, evaluaciones_faltantes,
+           consolidado_evaluaciones, captura, asistencia, asistencia_minima)
   
   
   
