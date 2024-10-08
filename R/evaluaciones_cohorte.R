@@ -37,7 +37,7 @@ procesar_forms <- function() {
   datos_inscripcion$email <- str_to_lower(datos_inscripcion$email)
   
   # Planilla para almacenar los resultados de esta función
-  hoja_calculo = cohorte_actual$form_aprobados
+  hoja_calculo = cohorte_actual$planilla_integrada
   
   # Encuentros
   E1 <- read_sheet("1rdHPoZ0zyAAGEj1L7Rsh5nA_H22aiLgDX2EK6kcNAFI")
@@ -64,14 +64,14 @@ procesar_forms <- function() {
                                                paste0("P", 1:10),
                                                "email",
                                                "evaluacion")
-
     
-   }
+    
+  }
   
   # Combinar los dataframes en uno
   Eval <- bind_rows(encuentros$E1, encuentros$E2, encuentros$E3, encuentros$E4, encuentros$E5)
   
- 
+  
   # Crear la columna 'email' usando 'email' o 'correo_viejo' si 'email' es NA
   Eval <- Eval %>%
     mutate(email = str_to_lower(if_else(is.na(email), correo_viejo, email)))
@@ -136,17 +136,31 @@ procesar_forms <- function() {
     }
   })
   
-
-  # levanta los datos para la planilla integrada de la cohorte actual
+  form_completos$consolidado_evaluaciones <- ifelse(is.na(form_completos$evaluaciones_faltantes), "completo_evaluaciones", "faltan_evaluaciones")
+  
+  
+  # levanta los datos para la planilla integrada de la cohorte actualy calcular asistencia
   planilla_integrada <- read_sheet(cohorte_actual$planilla_integrada) %>% 
-    select(orcid = ORCID, captura = Captura) %>% 
+    select(orcid = ORCID, captura = Captura, M1:M6) %>% 
     mutate(orcid = as.character(orcid),
-           captura = ifelse(captura == "Si", 1, 0))
+           captura = ifelse(captura == "Si", 1, 0),
+           M1 = ifelse(M1 == "Sí", 1, 0),
+           M2 = ifelse(M2 == "Sí", 1, 0),
+           M3 = ifelse(M3 == "Sí", 1, 0),
+           M4 = ifelse(M4 == "Sí", 1, 0),
+           M5 = ifelse(M5 == "Sí", 1, 0),
+           M6 = ifelse(M6 == "Sí", 1, 0)) %>% 
+    rowwise() %>% 
+    mutate(asistencia = sum(c_across(M1:M6), na.rm = TRUE),
+           asistencia_minima = ifelse(asistencia >= 4, 1, 0)) %>% 
+    ungroup() %>% 
+    select(-(M1:M6))
   
   # Agregar a form_completos si la persona cuenta o no con la captura del MOOC. 
   form_completos <- form_completos %>% 
     left_join(planilla_integrada, by = "orcid") 
-
+  
+  
   
   write_sheet(form_completos, 
               ss = hoja_calculo,
@@ -156,29 +170,6 @@ procesar_forms <- function() {
               ss = hoja_calculo,
               sheet = "Aprobados_no_inscriptos")
   
-  # Generar planilla con quienes están en condiciones de acceder al certificado
-  form_completos %>% 
-    filter(forms_completados == 5) %>% 
-    write_sheet(ss = hoja_calculo,
-                sheet = "Evaluaciones_completas")
-  
-  # Generar planilla con quienes tienen formularios incompletos
-  form_completos %>% 
-    filter(forms_completados < 5) %>% 
-    write_sheet(ss = hoja_calculo,
-                sheet = "Evaluaciones_incompletas")
-  
-  
-  # Plantilla con información acerca de cuántos id únicos completaron
-  # cada formularios
-  form_completos %>%
-    pivot_longer(cols = matches("E\\d"),
-                 names_to = "Formulario",
-                 values_to = "Aprobado") %>%
-    group_by(Formulario) %>% 
-    summarise(id_unico = sum(Aprobado)) %>% 
-    write_sheet(ss = hoja_calculo,
-                sheet = "Aprobados_id_unico")
   
   # Plantilla con información acerca de cuántas personas completaron
   # cuántos formularios y cuantos enviaron captura
@@ -191,9 +182,21 @@ procesar_forms <- function() {
     left_join(planilla_integrada, by = "orcid") %>% 
     group_by(formularios_aprobados) %>% 
     summarise(n_forms = n(),
-              n_capturas = sum(captura, na.rm = TRUE)) %>% 
+              n_capturas = sum(captura, na.rm = TRUE),
+              n_asistencia = sum(asistencia_minima)) %>% 
     write_sheet(ss = hoja_calculo,
                 sheet = "Aprobados_por_persona")
+  
+  # Plantilla con información acerca de cuántos id únicos completaron
+  # cada formularios
+  form_completos %>%
+    pivot_longer(cols = matches("E\\d"),
+                 names_to = "Formulario",
+                 values_to = "Aprobado") %>%
+    group_by(Formulario) %>% 
+    summarise(id_unico = sum(Aprobado)) %>% 
+    write_sheet(ss = hoja_calculo,
+                sheet = "Aprobados_id_unico")
   
   
   # Registrar horario de última actualización
@@ -203,14 +206,9 @@ procesar_forms <- function() {
   # Escribir la timestamp a una nueva hoja llamada "ultima_actualizacion"
   ultima_actualizacion %>% 
     write_sheet(
-    ss = hoja_calculo, 
-    sheet = "Ultima_actualizacion"
-  )
+      ss = hoja_calculo, 
+      sheet = "Ultima_actualizacion"
+    )
   
   
 }
-
-
-
-
-procesar_forms()
