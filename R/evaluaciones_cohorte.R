@@ -140,7 +140,7 @@ procesar_forms <- function() {
   
   
   # levanta los datos para la planilla integrada de la cohorte actualy calcular asistencia
-  planilla_integrada <- read_sheet(cohorte_actual$planilla_integrada) %>% 
+  planilla_integrada <- read_sheet(cohorte_actual$planilla_integrada, sheet = "Sheet1") %>% 
     select(orcid = ORCID, captura = Captura, M1:M6) %>% 
     mutate(orcid = as.character(orcid),
            captura = ifelse(captura == "Si", 1, 0),
