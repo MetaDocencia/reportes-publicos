@@ -32,18 +32,20 @@ procesar_forms <- function() {
   fecha_inicio = as.Date(cohorte_actual$fecha_inicio)
   
   # Datos de personas inscriptas a la cohorte actual
-  # Leer la hoja de inscripción
+  # Leer la hoja de inscripción de la cohorte actual
   datos_inscripcion <- read_sheet(cohorte_actual$form_inscripcion)
   
-  # Seleccionar columnas que contengan "email" y "ORCID" (sin importar mayúsculas/minúsculas)
+  # Seleccionar columnas que contengan "email" o "correo" y "ORCID" (sin importar mayúsculas/minúsculas)
   datos_inscripcion <- datos_inscripcion %>%
     select(
-      email = matches("(?i)email"),  # (?i) ignora mayúsculas/minúsculas
-      orcid = matches("(?i)orcid")
+      email = first(matches("(?i)email|correo")),  # Selecciona la primera columna que contenga "email" o "correo"
+      orcid = first(matches("(?i)orcid"))  # Selecciona la primera columna que contenga "ORCID"
     )
   
-  # Convertir los emails a minúsculas
-  datos_inscripcion$email <- str_to_lower(datos_inscripcion$email)
+  # Convertir los emails a minúsculas, si la columna 'email' existe
+  if ("email" %in% names(datos_inscripcion)) {
+    datos_inscripcion$email <- str_to_lower(datos_inscripcion$email)
+  }
   
   # Planilla para almacenar los resultados de esta función
   hoja_calculo = cohorte_actual$planilla_integrada
