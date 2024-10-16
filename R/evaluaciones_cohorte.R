@@ -43,9 +43,8 @@ procesar_forms <- function() {
     )
   
   # Convertir los emails a minúsculas, si la columna 'email' existe
-  if ("email" %in% names(datos_inscripcion)) {
-    datos_inscripcion$email <- str_to_lower(datos_inscripcion$email)
-  }
+  datos_inscripcion$email <- str_to_lower(datos_inscripcion$email)
+  
   
   # Planilla para almacenar los resultados de esta función
   hoja_calculo = cohorte_actual$planilla_integrada
