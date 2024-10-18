@@ -19,7 +19,7 @@ jobs:
         run: 'sudo apt-get -y install libcurl4-openssl-dev'
         shell: bash
       - name: Install CRAN packages
-        run: Rscript -e 'install.packages(c("googlesheets4", "googledrive", "dplyr", "tidyr", "lubridate", "stringr))'
+        run: Rscript -e 'install.packages(c("googlesheets4", "googledrive", "dplyr", "tidyr", "lubridate", "stringr"))'
       - name: Run insignias R script
         run: |
           source('R/evaluaciones_cohorte.R')
