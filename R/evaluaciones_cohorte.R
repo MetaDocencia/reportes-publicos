@@ -111,27 +111,41 @@ procesar_forms <- function() {
   form_completos <- Eval %>%
     anti_join(no_encontrados, by = c("orcid", "email")) %>%
     count(timestamp, apellido, nombre, email, orcid, evaluacion) %>%
-    pivot_wider(id_cols = c("timestamp","apellido", "nombre", "email", "orcid"),
+    pivot_wider(id_cols = c("timestamp", "apellido", "nombre", "email", "orcid"),
                 names_from = evaluacion,
                 values_from = n,
-                values_fill = list(n = 0)) %>%
+                values_fill = list(n = 0)) 
+  
+  # Listado de posibles columnas de evaluaciones
+  eval_columns <- c("E1", "E2", "E3", "E4", "E5")
+  
+  # Verificar cuáles de las columnas E1 a E5 están presentes en form_completos
+  for (col in eval_columns) {
+    if (!(col %in% names(form_completos))) {
+      form_completos[[col]] <- 0  # Añadir columna faltante con ceros
+    }
+  }
+    
+  # Obtener participantes con form aprobado
+  form_completos <- form_completos %>% 
     group_by(orcid) %>%
     summarise(
       apellido = first(apellido), 
       nombre = first(nombre),
       email = first(email),  
-      E1 = max(E1),  
-      E2 = max(E2),
-      E3 = max(E3),
-      E4 = max(E4),
-      E5 = max(E5),
+      E1 = max(E1, na.rm = TRUE),
+      E2 = max(E2, na.rm = TRUE),
+      E3 = max(E3, na.rm = TRUE),
+      E4 = max(E4, na.rm = TRUE),
+      E5 = max(E5, na.rm = TRUE),
       fecha = last(timestamp)
     ) %>%
     ungroup() %>% 
     distinct(.keep_all = TRUE) %>% 
     rowwise() %>%
-    mutate(forms_completados = sum(c_across(matches("E\\d")))) %>% 
+    mutate(forms_completados = sum(c_across(matches("^E\\d")), na.rm = TRUE)) %>% 
     select(orcid, apellido, nombre, email, E1, E2, E3, E4, E5, forms_completados, fecha)
+  
   
   # Crea un vector con los nombres de los encuentros
   encuentros <- c("Encuentro 1", "Encuentro 2", "Encuentro 3", "Encuentro 4", "Encuentro 5")
