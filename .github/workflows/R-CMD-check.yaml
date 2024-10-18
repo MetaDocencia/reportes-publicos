@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.TOKEN_USUARIO_JESI }}
-      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.AUTENTICACION_NO_INTERACTIVA_MD }}
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.AUTENTICACION_NO_INTERACTIVA }}
     steps:
       - uses: actions/checkout@v4
       - uses: r-lib/actions/setup-r@v2
