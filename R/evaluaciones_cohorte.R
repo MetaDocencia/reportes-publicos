@@ -5,6 +5,12 @@ library(dplyr)
 library(lubridate)
 library(stringr)
 
+# Autenticación con Google Drive y Google Sheets
+# Este bloque autentica al script con las APIs de Google Drive y Google Sheets, utilizando credenciales
+# almacenadas en la variable de entorno 'GOOGLE_APPLICATION_CREDENTIALS'. Estas credenciales, previamente
+# configuradas en GitHub Actions, permiten al script acceder y manipular hojas de cálculo y archivos almacenados
+# en Google Drive. El sistema de autenticación basado en OAuth 2.0 asegura que se tengan los permisos
+# necesarios para interactuar con los datos sin necesidad de autenticación manual.
 
 # for googledrive
 drive_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
