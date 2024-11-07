@@ -1,6 +1,7 @@
 library(zen4R)
 library(lubridate)
 library(googlesheets4)
+library(dplyr)
 
 # for googlesheets4
 gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
@@ -23,7 +24,7 @@ datos_registros <- lapply(registros, function(registro) {
   list(
     titulo = registro$metadata$title,
     tipo = registro$metadata$resource_type$id,
-    fecha_creacion = registro$metadata$publication_date,
+    fecha_publicacion = registro$metadata$publication_date,
     vistas = registro$stats$all_versions.unique_views,
     descargas = registro$stats$all_versions.unique_downloads
   )
@@ -42,10 +43,13 @@ ultima_actualizacion <- data.frame(timestamp = Sys.time()-hours(3))
 df_registros$dias_publicacion <- as.integer(as.Date(ultima_actualizacion$timestamp) - as.Date(df_registros$fecha_creacion))
 
 # Vistas/días
-df_registros$vistas_dias <- df_registros$vistas/df_registros$dias_publicacion
+df_registros$vistas_dias <- round(df_registros$vistas/df_registros$dias_publicacion, 2)
 
 # Descargas/días
-df_registros$descargas_dias <- df_registros$descargas/df_registros$dias_publicacion
+df_registros$descargas_dias <- round(df_registros$descargas/df_registros$dias_publicacion, 2)
+
+# Ordenar registros por visitas
+df_registros <- arrange(df_registros, desc(vistas_dias))
 
 # Guardar el data frame en una hoja de cálculo
 write_sheet(df_registros,
