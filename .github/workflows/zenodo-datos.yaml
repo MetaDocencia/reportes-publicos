@@ -10,7 +10,6 @@ jobs:
     name: Recuperar registros zenodo
     runs-on: ubuntu-latest
     env:
-      AT_zenodo: ${{ secrets.TOKEN_zenodo }}
       GITHUB_PAT: ${{ secrets.TOKEN_USUARIO_JESI }}
       GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.AUTENTICACION_NO_INTERACTIVA }}
       
