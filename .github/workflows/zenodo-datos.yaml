@@ -26,7 +26,7 @@ jobs:
           Rscript -e "install.packages('remotes', repos='https://ftp.belnet.be/mirror/CRAN')"
       - name: Install zen4R
         run: |
-          Rscript -e "remotes::install_github('eblondel/zen4R')"
+          Rscript -e "remotes::install_github('eblondel/zen4R', dependencies = T)"
       - name: Run zenodo-dator.R script
         run: |
           source('R/zenodo-datos.R')
