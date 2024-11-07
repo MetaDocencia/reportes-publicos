@@ -39,7 +39,7 @@ df_registros <- do.call(rbind, lapply(datos_registros, as.data.frame))
 ultima_actualizacion <- data.frame(timestamp = Sys.time()-hours(3))
 
 # Días desde publicación
-df_registros$dias_publicacion <- as.Date(ultima_actualizacion$timestamp) - as.Date(df_registros$fecha_creacion)
+df_registros$dias_publicacion <- as.integer(as.Date(ultima_actualizacion$timestamp) - as.Date(df_registros$fecha_creacion))
 
 # Vistas/días
 df_registros$vistas_dias <- df_registros$vistas/df_registros$dias_publicacion
