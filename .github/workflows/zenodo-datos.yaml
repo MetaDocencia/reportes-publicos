@@ -23,6 +23,8 @@ jobs:
         run: Rscript -e 'install.packages(c("googlesheets4", "lubridate"))'
       - name: Install libsodium 
         run: 'sudo apt-get install -y libsodium-dev'
+      - name: Install librdf0-dev
+        run: 'sudo apt-get install -y librdf0-dev'
       - name: Install remotes
         run: |
           Rscript -e "install.packages('remotes', repos='https://ftp.belnet.be/mirror/CRAN')"
