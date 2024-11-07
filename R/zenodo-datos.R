@@ -2,10 +2,6 @@ library(zen4R)
 library(lubridate)
 library(googlesheets4)
 
-# token de acceso personal para zenodo
-token <-  Sys.getenv('AT_zenodo')
-
-
 # for googlesheets4
 gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
 
@@ -15,7 +11,7 @@ hoja_calculo <- "1vJ5BffSEJia0HS36zUJU90ivmekopyBVEsKTndtJOQI"
 
 
 # Configurar el cliente Zenodo con el token de acceso personal
-zenodo <- ZenodoManager$new(token = token)
+zenodo <- ZenodoManager$new(token = NULL)
 
 # Extraer todos los registros de la comunidad MetaDocencia (usar un n mayor al 
 # número de publicaciones actuales)
