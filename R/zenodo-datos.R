@@ -32,14 +32,25 @@ datos_registros <- lapply(registros, function(registro) {
 # Convierte los datos a un data.frame
 df_registros <- do.call(rbind, lapply(datos_registros, as.data.frame))
 
-# Guardar el data frame en una hoja de cálculo
-write_sheet(df_registros,
-            ss = hoja_calculo,
-            sheet = "publicaciones")
+
 
 # Registrar horario de última actualización
 # Levantar hora actual
 ultima_actualizacion <- data.frame(timestamp = Sys.time()-hours(3))
+
+# Días desde publicación
+df_registros$dias_publicacion <- as.Date(ultima_actualizacion$timestamp) - as.Date(df_registros$fecha_creacion)
+
+# Vistas/días
+df_registros$vistas_dias <- df_registros$vistas/df_registros$dias_publicacion
+
+# Descargas/días
+df_registros$descargas_dias <- df_registros$descargas/df_registros$dias_publicacion
+
+# Guardar el data frame en una hoja de cálculo
+write_sheet(df_registros,
+            ss = hoja_calculo,
+            sheet = "publicaciones")
 
 # Escribir la timestamp a una nueva hoja llamada "ultima_actualizacion"
 write_sheet(ultima_actualizacion,
