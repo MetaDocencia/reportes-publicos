@@ -2,7 +2,7 @@ name: Recuperar registros zenodo
 
 on:
   schedule:
-    - cron: '0 13 * * 5'
+    - cron: '0 20 * * 5'
   workflow_dispatch:
 
 jobs:
