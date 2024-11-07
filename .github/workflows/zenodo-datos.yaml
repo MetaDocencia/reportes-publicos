@@ -20,7 +20,7 @@ jobs:
         run: 'sudo apt-get -y install libcurl4-openssl-dev'
         shell: bash
       - name: Install CRAN packages
-        run: Rscript -e 'install.packages(c("googlesheets4", "lubridate", "sodium"))'
+        run: Rscript -e 'install.packages(c("googlesheets4", "lubridate"))'
       - name: Install remotes
         run: |
           Rscript -e "install.packages('remotes', repos='https://ftp.belnet.be/mirror/CRAN')"
