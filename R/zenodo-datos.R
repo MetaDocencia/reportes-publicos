@@ -16,7 +16,7 @@ zenodo <- ZenodoManager$new(token = NULL)
 
 # Extraer todos los registros de la comunidad MetaDocencia (usar un n mayor al 
 # número de publicaciones actuales)
-registros <- zenodo$getRecords(q = "communities:metadocencia", size = 700)
+registros <- zenodo$getRecords(q = "communities:metadocencia", size = 700, all_versions = TRUE)
 
 # Filtrar la información relevante: título, fecha de publicacion, vistas y descargas
 # únicas y tipo de publicación. 
@@ -33,6 +33,24 @@ datos_registros <- lapply(registros, function(registro) {
 # Convierte los datos a un data.frame
 df_registros <- do.call(rbind, lapply(datos_registros, as.data.frame))
 
+df_registros <- df_registros %>%
+  mutate(titulo = ifelse(titulo == "ALTa Ciencia Abierta: El Ethos de la Ciencia Abierta",
+                         "ALTa Ciencia Abierta: Principios de la Ciencia Abierta",
+                         titulo)) %>%
+  # Agrupar por título, vistas y descargas porque algunos títulos fueron cargados como
+  # documentos distintos y tienen distinto n de vistas y descargas. 
+  group_by(titulo, vistas, descargas) %>% 
+  # Retener fecha de primera publicacion unicamente
+  filter(fecha_publicacion == min(fecha_publicacion)) %>%
+  # identificar titulos publicados más de una vez y sumar vistas y descargas
+  group_by(titulo) %>%
+  mutate(vistas = sum(vistas),
+         descargas = sum(descargas)) %>%
+  # Eliminar la duplicación quedandonos con la primera fecha de publicacion
+  filter(fecha_publicacion == min(fecha_publicacion)) %>%
+  ungroup() %>%
+  # Eliminar versiones de un mismo titulo modificadas en el mismo dia. 
+  distinct(titulo, fecha_publicacion, .keep_all = TRUE)
 
 
 # Registrar horario de última actualización
@@ -40,7 +58,7 @@ df_registros <- do.call(rbind, lapply(datos_registros, as.data.frame))
 ultima_actualizacion <- data.frame(timestamp = Sys.time()-hours(3))
 
 # Días desde publicación
-df_registros$dias_publicacion <- as.integer(as.Date(ultima_actualizacion$timestamp) - as.Date(df_registros$fecha_creacion))
+df_registros$dias_publicacion <- as.integer(as.Date(ultima_actualizacion$timestamp) - as.Date(df_registros$fecha_publicacion))
 
 # Vistas/días
 df_registros$vistas_dias <- round(df_registros$vistas/df_registros$dias_publicacion, 2)
