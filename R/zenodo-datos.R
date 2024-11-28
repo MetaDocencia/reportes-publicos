@@ -67,7 +67,7 @@ df_registros$vistas_mes <- round(df_registros$vistas/df_registros$mes_publicacio
 df_registros$descargas_mes <- round(df_registros$descargas/df_registros$mes_publicacion, 2)
 
 # Ordenar registros por visitas
-df_registros <- arrange(df_registros, desc(vistas_dias))
+df_registros <- arrange(df_registros, desc(vistas_mes))
 
 # Guardar el data frame en una hoja de cálculo
 write_sheet(df_registros,
