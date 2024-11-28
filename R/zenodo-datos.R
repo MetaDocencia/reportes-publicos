@@ -58,13 +58,13 @@ df_registros <- df_registros %>%
 ultima_actualizacion <- data.frame(timestamp = Sys.time()-hours(3))
 
 # Días desde publicación
-df_registros$dias_publicacion <- as.integer(as.Date(ultima_actualizacion$timestamp) - as.Date(df_registros$fecha_publicacion))
+df_registros$mes_publicacion <- interval(as.Date(df_registros$fecha_publicacion), as.Date(ultima_actualizacion$timestamp)) %/% months(1)
 
 # Vistas/días
-df_registros$vistas_dias <- round(df_registros$vistas/df_registros$dias_publicacion, 2)
+df_registros$vistas_mes <- round(df_registros$vistas/df_registros$mes_publicacion, 2)
 
 # Descargas/días
-df_registros$descargas_dias <- round(df_registros$descargas/df_registros$dias_publicacion, 2)
+df_registros$descargas_mes <- round(df_registros$descargas/df_registros$mes_publicacion, 2)
 
 # Ordenar registros por visitas
 df_registros <- arrange(df_registros, desc(vistas_dias))
