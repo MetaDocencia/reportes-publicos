@@ -60,6 +60,10 @@ ultima_actualizacion <- data.frame(timestamp = Sys.time()-hours(3))
 # Días desde publicación
 df_registros$mes_publicacion <- interval(as.Date(df_registros$fecha_publicacion), as.Date(ultima_actualizacion$timestamp)) %/% months(1)
 
+# Para evitar errores con publicaciones que tienen 0 meses
+df_registros$mes_publicacion <- df_registros$mes_publicacion  
+
+
 # Vistas/días
 df_registros$vistas_mes <- round(df_registros$vistas/df_registros$mes_publicacion, 2)
 
