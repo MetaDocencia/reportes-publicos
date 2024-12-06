@@ -34,6 +34,23 @@ procesar_forms <- function() {
   cohorte_actual <- info_cohortes %>%
     filter(fecha_inicio <= fecha_actual & fecha_fin >= fecha_actual)
   
+  # Verificar si existe una cohorte activa
+  if (nrow(cohorte_actual) == 0) {
+    mensaje <- data.frame(
+      mensaje = "No hay ninguna cohorte activa en este momento.",
+      timestamp = Sys.time()
+    )
+    
+    # Registrar mensaje en una hoja de cálculo
+    write_sheet(
+      mensaje,
+      ss = "1jMsLpWNoOLhlJalo4gKJmAt0MEm-bFLYwlKX_iX7GGg",  
+      sheet = "Registro"
+    )
+    
+    # Finalizar el script
+    quit("no")
+  }  
   # Identificar fecha de inicio de la cohorte actual
   fecha_inicio = as.Date(cohorte_actual$fecha_inicio)
   
