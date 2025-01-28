@@ -2,7 +2,7 @@ name: Actualizacion Evaluaciones Cohorte
 
 on:
   schedule:
-    - cron: '0 13 * * *'
+    - cron: '0 13 * * *' # Corre todos los días a las 13:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -20,8 +20,24 @@ jobs:
         shell: bash
       - name: Install CRAN packages
         run: Rscript -e 'install.packages(c("googlesheets4", "googledrive", "dplyr", "tidyr", "lubridate", "stringr"))'
-      - name: Run insignias R script
+      - name: Run R script
         run: |
           source('R/evaluaciones_cohorte.R')
         shell: Rscript {0}
-
+      - name: Check for error file
+        id: check_error
+        run: |
+          if [ -f "error_github_issue.txt" ]; then
+            echo "Planilla no encontrada. Creando un Issue en GitHub..."
+            echo "error=true" >> $GITHUB_ENV
+          else
+            echo "error=false" >> $GITHUB_ENV
+          fi
+      - name: Create GitHub Issue
+        if: env.error == 'true'
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Error: Planilla Integrada no creada"
+          content-filepath: error_github_issue.txt
+          labels: error, automatización
