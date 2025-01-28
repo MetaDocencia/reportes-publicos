@@ -51,6 +51,32 @@ procesar_forms <- function() {
     # Finalizar el script
     quit("no")
   }  
+  
+  
+  
+  # Verificar si planilla_integrada está disponible
+  if (is.na(cohorte_actual$planilla_integrada) || is.null(cohorte_actual$planilla_integrada)) {
+    mensaje_error <- data.frame(
+      mensaje = "La planilla integrada no fue creada para la cohorte actual.",
+      timestamp = Sys.time()
+    )
+    
+    # Registrar mensaje en una hoja de cálculo
+    write_sheet(
+      mensaje_error,
+      ss = "1jMsLpWNoOLhlJalo4gKJmAt0MEm-bFLYwlKX_iX7GGg",  
+      sheet = "Registro"
+    )
+    
+    # Crear un archivo temporal con el mensaje de error
+    writeLines(mensaje_error$mensaje, "error_github_issue.txt")
+    
+    # Detener la ejecución del script
+    quit("no")
+  }
+  
+  
+  
   # Identificar fecha de inicio de la cohorte actual
   fecha_inicio = as.Date(cohorte_actual$fecha_inicio)
   
