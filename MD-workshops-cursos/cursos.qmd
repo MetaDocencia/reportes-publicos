@@ -81,11 +81,11 @@ t1 |>
                           asis_edicion = "Attendees per edition",
                           encuesta = "Post surveys completed (%)",
                           NPS = "NPS (%)")) |>
-  gt() 
+  kable() 
 
 ```
 
-Over the last 5 years, MetaDoncia has taught `r t1[1,2]` editions and a total of `r t1[1,3]` hours of `r t1[1,1]` different workshops. We reached `r t1[1,4]` educators, researchers and technicians, of which `r round(t1[1,5]/t1[1,4]*100,1)`% attended synchronously and `r t1b[1,1]`% completed the post workshop survey, in which we obtained an average Net Promoter Score (NPS) of `r t1[1,8]`% (min = `r min(ws$NPS, na.rm = TRUE)`, max = `r max(ws$NPS, na.rm = TRUE)`). This is considered excellent, as the NPS ranges from -100% to +100%, and values larger than +50%—our target—reflect very high satisfaction from the participants.
+Over the last 5 years, MetaDocencia has taught `r t1[1,2]` editions and a total of `r t1[1,3]` hours of `r t1[1,1]` different workshops. We reached `r t1[1,4]` educators, researchers and technicians, of which `r round(t1[1,5]/t1[1,4]*100,1)`% attended synchronously and `r t1b[1,1]`% completed the post workshop survey, in which we obtained an average Net Promoter Score (NPS) of `r t1[1,8]`% (min = `r min(ws$NPS, na.rm = TRUE)`, max = `r max(ws$NPS, na.rm = TRUE)`). This is considered excellent, as the NPS ranges from -100% to +100%, and values larger than +50%—our target—reflect very high satisfaction from the participants.
 
 ### Metrics by workshop
 
@@ -134,17 +134,15 @@ t2 |>
          "Attendees per edition" = asis_edicion,
           "Post surveys completed (%)" = encuesta,
           "NPS (%)" = NPS) |>
-  gt() 
+  kable() 
 
 ```
-
 
 Among the most popular workshops is Present! Resources for Active Meetings, which held 65 editions and drew over 1,400 participants, serving as a major gateway to the MetaDocencia community, and ALTa Ciencia Abierta—the Latin American contextualization of NASA's Open Science 101—which held the larger number of sign-ups and attendees per edition, over 100 and 70 respectively. Meanwhile, workshops like How to Teach Programming Online and Train the Trainer stand out for their high satisfaction and retention levels, marking the beginning of a learning community capable of sustaining and multiplying its impact over time.
 
 ### Metrics by year
 
 Since its inception, MetaDocencia has shown consistent and strategic growth in its educational offerings, reflecting the development of a committed and collaborative learning community across Latin America.
-
 
 ```{r}
 # | label: tbl-Ws3
@@ -179,10 +177,9 @@ t3 |>
          "Attendees per edition" = asis_edicion,
           "Post surveys completed (%)" = encuesta,
           "NPS (%)" = NPS) |>
-  gt() 
+  kable() 
 
 ```
-
 
 In the early years (2020–2021), the focus was on short, high-demand workshops, with a total of `r t3[1,2]+t3[2,2]` editions in just two years. These introductory sessions—often one-day events—emerged as a rapid response to the urgent educational needs brought on by the COVID-19 pandemic, and allowed MetaDocencia to reach over 1500 participants, positioning the initiative as a key player in digital teacher training.
 

@@ -1,13 +1,12 @@
 project:
   title: "MetaDocencia's workshops in numbers"
-  output-dir: reportes
   render:
     - cursos.qmd
 
 
+
 format:
   gfm: 
-    toc: true
     output-file: README.md
   html: 
     toc: true
@@ -18,3 +17,5 @@ editor: visual
 execute: 
   echo: false
   warning: false
+
+embed-resources: true
