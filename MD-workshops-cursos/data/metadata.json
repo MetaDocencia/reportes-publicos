@@ -1,0 +1,74 @@
+{
+    "title": "cursos_resumen.csv",
+    "description": "Este dataset contiene información resumen sobre las ediciones de cursos organizados por MetaDocencia entre 2020 y 2024, incluyendo cantidad de ediciones, modalidad, duración, cantidad de inscriptos/as y asistentes, diversidad geográfica y métricas de evaluación como NPS y certificación.",
+    "creator": [
+        {
+            "name": "Jesica Formoso",
+            "orcid": "0000-0003-3062-4036",
+            "affiliation": "CIIPME-CONICET / MetaDocencia"
+        }
+    ],
+    "created": "2025-04-23",
+    "language": "es",
+    "license": "CC-BY-4.0",
+    "keywords": [
+        "formación docente",
+        "cursos virtuales",
+        "capacitación",
+        "evaluación de cursos",
+        "MetaDocencia"
+    ],
+    "format": "csv",
+    "variables": [
+        {
+            "name": "nombre",
+            "description": "Nombre del curso"
+        },
+        {
+            "name": "anio",
+            "description": "Año en que se dictaron las ediciones"
+        },
+        {
+            "name": "ediciones",
+            "description": "Cantidad total de ediciones del curso en ese año"
+        },
+        {
+            "name": "online",
+            "description": "Cantidad de ediciones en modalidad online"
+        },
+        {
+            "name": "horas_curso",
+            "description": "Cantidad de horas por edición"
+        },
+        {
+            "name": "horas_totales",
+            "description": "Cantidad total de horas dictadas en el año"
+        },
+        {
+            "name": "inscriptos",
+            "description": "Cantidad de personas inscriptas"
+        },
+        {
+            "name": "asistentes",
+            "description": "Cantidad de personas que asistieron"
+        },
+        {
+            "name": "paises",
+            "description": "Países de procedencia de las personas asistentes"
+        },
+        {
+            "name": "respondieron_encuesta_post",
+            "description": "Cantidad de personas que respondieron la encuesta posterior al curso"
+        },
+        {
+            "name": "NPS",
+            "description": "Net Promoter Score promedio"
+        },
+        {
+            "name": "certificacion",
+            "description": "Porcentaje de personas que recibieron certificación"
+        }
+    ],
+    "source": "MetaDocencia",
+    "notes": "Los datos se actualizaron por última vez en abril de 2025. Algunos valores faltantes corresponden a cursos en los que no se recolectó la métrica respectiva."
+}

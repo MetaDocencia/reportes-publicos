@@ -1,0 +1,21 @@
+nombre,anio,ediciones,online,horas_curso,horas_totales,inscriptos,asistentes,paises,respondieron_encuesta_post,NPS,certificacion
+intro_ABC,2020,41,41,3,123,931,625,Alemania/Argentina/Bolivia/Brasil/Canadá/Chile/Colombia/Costa Rica/Cuba/Ecuador/España/Estados Unidos/Francia/Honduras/México/Paraguay/Perú/Reino Unido/Uruguay/Venezuela,,,
+zoom,2020,1,1,2,2,16,10,Argentina/Brasil/Canadá/México,,,
+intro_ABC,2021,20,20,3,60,369,268,Argentina/Brasil/Chile/Colombia/España/México/Perú/Venezuela,238,87.2,
+programar,2021,6,6,3,18,97,63,Alemania/Argentina/Colombia/Perú,55,92.72,
+zoom,2021,5,5,2,10,62,50,Argentina/Colombia/España,36,100,
+intro_ABC,2022,2,2,3,6,89,26,México/Venezuela/Argentina/Uruguay/Panamá/Chile/España,,,
+intro_ABC,2023,2,2,3,6,45,16,Argentina/Canadá/Brasil/Uruguay/México/China/Colombia/Bolivia/Venezuela/Paraguay/El Salvador/Costa Rica,,,
+programar,2023,3,3,3,9,118,38,Argentina/Venezuela/Costa Rica/Perú/Ecuador/México/Chile/Alemania/Uruguay/Estados Unidos/España/Colombia/El Salvador/Paraguay/República Dominicana/Bolivia/Brasil,,,
+mision-exploracion-conversatorio-alta-ca,2023,1,1,9,9,94,83,Canadá/Francia/Alemania/Estados Unidos/Austria/México/Costa Rica/España/Ecuador/Colombia/India/Perú/Brasil/Bolivia/Paraguay/Uruguay/Chile/Argentina,72,79.2,21
+alta-ca,2024,2,2,18,36,250,138,Argentina/Colombia/México/Perú/Bolivia/Venezuela/Chile/Brasil/Cuba/El Salvador/Paraguay/Uruguay/Nicaragua/España/Estados Unidos/Costa Rica/Chequia/Guatemala/Honduras/India/Italia/Países Bajos/Polonia,79,71.4,127
+alta-ca,2024,1,1,18,18,150,66,Argentina/Colombia/México/Perú/Bolivia/Venezuela/Chile/Brasil/Cuba/El Salvador/Paraguay/Uruguay/Nicaragua/España/Estados Unidos/Costa Rica/Chequia/Guatemala/Honduras/India/Italia/Países Bajos/Polonia,43,88.6,63
+instructor-training,2024,1,1,16,16,12,9,Argentina/Uruguay/México/Costa Rica,8,88.9,9
+learn-r,2020,1,1,2,2,18,18,,18,,
+learn-r,2021,1,1,2,2,26,26,,26,80.8,
+learn-r,2022,2,2,2,4,24,24,,24,100,
+hojas-calculo,2021,1,1,3,3,23,23,Argentina/México/Ecuador,12,100,
+instructor-training,2020,1,0,16,16,20,20,Argentina,,,20
+instructor-training,2021,1,1,16,16,25,25,,,,16
+instructor-training,2022,1,1,16,16,22,21,,,,14
+instructor-training,2022,1,1,16,16,13,9,Argentina/Uruguay/México/Costa Rica/Brasil/Guatemala,,,9
