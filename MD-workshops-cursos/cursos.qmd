@@ -43,6 +43,7 @@ ws <- read_csv("data/cursos_resumen.csv")
 
 In this report you will find the main characteristics of the MetaDocencia courses and workshops delivered between 2020 and 2024.
 
+
 ### Workshops' total metrics
 
 ```{r}
@@ -85,7 +86,72 @@ t1 |>
 
 ```
 
-Over the last 5 years, MetaDocencia has taught `r t1[1,2]` editions and a total of `r t1[1,3]` hours of `r t1[1,1]` different workshops. We reached `r t1[1,4]` educators, researchers and technicians, of which `r round(t1[1,5]/t1[1,4]*100,1)`% attended synchronously and `r t1b[1,1]`% completed the post workshop survey, in which we obtained an average Net Promoter Score (NPS) of `r t1[1,8]`% (min = `r min(ws$NPS, na.rm = TRUE)`, max = `r max(ws$NPS, na.rm = TRUE)`). This is considered excellent, as the NPS ranges from -100% to +100%, and values larger than +50%—our target—reflect very high satisfaction from the participants.
+
+```{r}
+paises <- ws |>
+  separate_rows(paises, sep = "/") |>
+  pull(paises)
+
+paises_md <- unique(paises)
+
+# Información de longitud y latitud para crear el mapa
+mapamundi <- ne_countries(scale = "medium", returnclass = "sf") 
+
+# Códigos iso3 para cada país, y nombre en español e inglés
+codigos <- countrycode::codelist %>% 
+  select(pais_ES = cldr.name.es, iso_a3 = iso3c) %>% 
+  drop_na(pais_ES) %>% 
+  filter(iso_a3 %in% mapamundi$iso_a3)
+
+# Unir nombres en español al mapamundi
+mapamundi <- mapamundi %>% 
+  left_join(codigos, by = "iso_a3") 
+
+# Sumar información sobre los inscriptos al mapamundi
+mapamundi <- mapamundi %>% 
+  mutate(metadocencia = ifelse(pais_ES %in% paises_md, TRUE, FALSE)) 
+
+
+paises_in <- data.frame(MD = mapamundi$metadocencia,
+                        pais_in = mapamundi$name_long,
+                        pais_es = mapamundi$pais_ES)
+
+# comentar este código si se quieren los datos en español
+paises_in <- paises_in %>%
+  filter(MD) %>%
+  select(pais_in)
+
+paises <- paises_in
+
+
+```
+
+Over the last 5 years, MetaDocencia has taught `r t1[1,2]` editions and a total of `r t1[1,3]` hours of `r t1[1,1]` different workshops. We reached `r t1[1,4]` educators, researchers and technicians from `r n_distinct(paises_md)` countries.
+
+```{r}
+mapamundi %>% 
+  ggplot() +
+  geom_sf(aes(fill = metadocencia), color = "white", size = .3) +
+  labs(title = "",
+       subtitle = "",
+       x = "",
+       y = "") +
+  scale_fill_manual(values = c("gray", "#c83737")) +
+  theme_map(base_size = base_size) +
+  coord_sf(xlim = c(-160, 170), ylim = c(-55, 90)) +
+    theme(
+    panel.spacing = unit(c(-1, 0, -1, 0), "cm"),
+    plot.margin = unit(c(-0.3, 0, -0.15, 0), "null"), # Adjust margins to trim the plot
+    legend.position = 'none'
+  )
+```
+
+
+
+
+
+
+From the total signups, `r round(t1[1,5]/t1[1,4]*100,1)`% attended synchronously and `r t1b[1,1]`% completed the post workshop survey, in which we obtained an average Net Promoter Score (NPS) of `r t1[1,8]`% (min = `r min(ws$NPS, na.rm = TRUE)`, max = `r max(ws$NPS, na.rm = TRUE)`). This is considered excellent, as the NPS ranges from -100% to +100%, and values larger than +50%—our target—reflect very high satisfaction from the participants.
 
 ### Metrics by workshop
 

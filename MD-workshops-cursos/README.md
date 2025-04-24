@@ -20,12 +20,15 @@ MetaDocencia courses and workshops delivered between 2020 and 2024.
 
 Over the last 5 years, MetaDocencia has taught 94 editions and a total
 of 388 hours of 8 different workshops. We reached 2404 educators,
-researchers and technicians, of which 64.8% attended synchronously and
-79.6% completed the post workshop survey, in which we obtained an
-average Net Promoter Score (NPS) of 88.9% (min = 71.4, max = 100). This
-is considered excellent, as the NPS ranges from -100% to +100%, and
-values larger than +50%—our target—reflect very high satisfaction from
-the participants.
+researchers and technicians from 33 countries.
+
+![](cursos_files/figure-commonmark/unnamed-chunk-4-1.png)
+
+From the total signups, 64.8% attended synchronously and 79.6% completed
+the post workshop survey, in which we obtained an average Net Promoter
+Score (NPS) of 88.9% (min = 71.4, max = 100). This is considered
+excellent, as the NPS ranges from -100% to +100%, and values larger than
++50%—our target—reflect very high satisfaction from the participants.
 
 ### Metrics by workshop
 
