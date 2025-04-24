@@ -8,7 +8,7 @@ project:
 format:
   gfm: 
     toc: true
-    theme: style.scss
+    output-file: README.md
   html: 
     toc: true
     theme: style.scss
