@@ -129,27 +129,24 @@ paises <- paises_in
 Over the last 5 years, MetaDocencia has taught `r t1[1,2]` editions and a total of `r t1[1,3]` hours of `r t1[1,1]` different workshops. We reached `r t1[1,4]` educators, researchers and technicians from `r n_distinct(paises_md)` countries.
 
 ```{r}
-mapamundi %>% 
+# | label: fig-map
+# | fig-cap: "Countries reached by MetaDocencia workshops"
+
+map_plot <- mapamundi %>% 
   ggplot() +
   geom_sf(aes(fill = metadocencia), color = "white", size = .3) +
-  labs(title = "",
-       subtitle = "",
-       x = "",
-       y = "") +
   scale_fill_manual(values = c("gray", "#c83737")) +
   theme_map(base_size = base_size) +
   coord_sf(xlim = c(-160, 170), ylim = c(-55, 90)) +
-    theme(
+  theme(
     panel.spacing = unit(c(-1, 0, -1, 0), "cm"),
-    plot.margin = unit(c(-0.3, 0, -0.15, 0), "null"), # Adjust margins to trim the plot
+    plot.margin = unit(c(-0.3, 0, -0.15, 0), "null"),
     legend.position = 'none'
   )
+
+map_plot
+
 ```
-
-
-
-
-
 
 From the total signups, `r round(t1[1,5]/t1[1,4]*100,1)`% attended synchronously and `r t1b[1,1]`% completed the post workshop survey, in which we obtained an average Net Promoter Score (NPS) of `r t1[1,8]`% (min = `r min(ws$NPS, na.rm = TRUE)`, max = `r max(ws$NPS, na.rm = TRUE)`). This is considered excellent, as the NPS ranges from -100% to +100%, and values larger than +50%—our target—reflect very high satisfaction from the participants.
 

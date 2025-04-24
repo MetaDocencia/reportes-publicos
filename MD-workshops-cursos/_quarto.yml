@@ -12,10 +12,6 @@ format:
     toc: true
     theme: style.scss
 
-editor: visual
-
 execute: 
   echo: false
   warning: false
-
-embed-resources: true
