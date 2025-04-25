@@ -1,0 +1,571 @@
+---
+title: "ALTa Ciencia Abierta (Latin American contextualization of NASA's Open Science 101 course)"
+---
+
+```{r}
+# Paquetes
+
+
+# Manipulación de datos y visualización
+library(tidyverse)
+library(ggthemes)
+library(ggstats)
+library(glue)
+library(knitr)
+library(kableExtra)
+library(googlesheets4)
+library(janitor)
+
+# Mapas
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(countrycode)
+library(ggiraph)
+
+# devtools::install_github("yutannihilation/ggsflabel")
+library(ggsflabel)
+
+# Importar datos
+library(readxl)
+
+# Tamaño base de la letra de gráficos
+base_size = 16
+
+```
+
+```{r}
+#| label: setup-globals
+#| include: false
+
+source("R/_funciones_reportes.R")
+```
+
+```{r}
+
+# Datos del formulario de inscripción y el pre test de investigación
+
+participantes <- readxl::read_xlsx("data/datos_anonimizados.xlsx")
+
+```
+
+*Note: The following report is created based on the responses of participants that signed an informed consent to publish their data. This data correspond to a 44% of the actual participants.* 
+
+## Meet the attendees!
+
+```{r}
+# Tabla con porcentaje de inscriptos por país
+paises <- participantes %>% 
+  tabyl(pais_IN, show_na = FALSE) %>% 
+  rename(pais = "pais_IN", porcentaje = "percent") %>% 
+  mutate(porcentaje = round(porcentaje*100, 2)) %>% 
+  arrange(desc(porcentaje))
+
+
+
+
+```
+
+### Where do they come from? (n = `r sum(paises$n)`, `r sprintf('%.1f', sum(paises$n)/nrow(participantes)*100)`%)
+
+A total of `r nrow(participantes)` participants signed up from `r nrow(paises)` countries, `r paises[1,3]`% (n = `r paises[1,2]`) from `r paises[1,1]`, followed by `r paises[2,3]`% (n = `r paises[2,2]`) from `r paises[2,1]` and `r paises[3,3]`% (n = `r paises[3,2]`) from `r paises[3,1]`. The remaining `r sum(paises[4:nrow(paises),3])`% (n = `r sum(paises[4:nrow(paises),2])`) were from `r str_c(paises$pais[4:(nrow(paises)-1)], collapse = ", ")` and `r paises$pais[nrow(paises)]`.
+
+#### Figure 1. Country of residence of the people who signed up
+
+```{r}
+crear_mapa()
+
+
+
+
+
+
+```
+
+
+
+```{r}
+n_educ <- participantes %>% 
+  filter(!is.na(nivel_educativo_IN)) %>% 
+  count(nivel_educativo_IN) %>% 
+  mutate(por = round(n/sum(n)*100,1)) %>%
+  arrange(nivel_educativo_IN)
+
+plot.height = n_distinct(n_educ$nivel_educativo_IN)*0.5+0.5
+```
+
+### What is their educational level? (n = `r sum(n_educ$n)`, `r round(sum(n_educ$n)/nrow(participantes)*100,1)`%)
+
+A `r n_educ$por[5]`% (n = `r n_educ$n[5]`) has completed a graduate degree, `r n_educ$por[4]`% (n = `r n_educ$n[4]`) completed some graduate courses, `r n_educ$por[4]`% (n = `r n_educ$n[4]`) completed an undergraduate degree, `r sum(n_educ$por[3])`% (n = `r sum(n_educ$n[3])`) has taken or is currently taking undergraduate courses and `r n_educ$por[1]`% (n = `r n_educ$n[1]`) completed high school.
+
+#### Figure 2. Educational level of the people who signed up
+
+```{r, fig.width=7, fig.height=plot.height}
+
+n_educ %>%
+  mutate(nivel_educativo_IN = fct_relevel(nivel_educativo_IN,
+                                          "Completed high school",
+                                          "In progress bachelor's degree",
+                                          "Completed bachelor's degree",
+                                          "Some graduate courses",
+                                          "Graduate degree")) |> 
+  ggplot(aes(nivel_educativo_IN, por)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("")+
+  xlab("") +
+  ylab("Percentage (%)") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal(base_size = base_size)
+
+```
+
+```{r}
+formacion <- participantes %>% 
+  filter(!is.na(area_formacion_IN)) %>% 
+  count(area_formacion_IN) %>% 
+  mutate(por = round(n/sum(n)*100,1)) %>%
+    mutate(area_formacion = fct_reorder(area_formacion_IN,n)) %>% 
+  arrange(desc(por))
+
+plot.height = n_distinct(formacion$area_formacion_IN)*0.5+0.5
+```
+
+### What is their field of study? (n = `r sum(formacion$n)`, `r round(sum(formacion$n)/nrow(participantes)*100,1)`%)
+
+We have attendees from `r nrow(formacion)` different fields of study. A `r formacion$por[1]`% (n = `r formacion$n[1]`) correspond to `r formacion$area_formacion[1]`, followed by a `r formacion$por[2]`% (n = `r formacion$n[2]`) corresponding to `r formacion$area_formacion[2]` and a `r formacion$por[3]`% (n = `r formacion$n[3]`) to `r formacion$area_formacion[3]`. The remaining `r sum(formacion$por[4:nrow(formacion)])`% (n = `r sum(formacion$n[4:nrow(formacion)])`) are people from the following fields: `r str_c(formacion$area_formacion[4:nrow(formacion)], collapse = ", ")`.
+
+#### Figure 3. Field of study of the people who signed up
+
+```{r, fig.width=7, fig.height=plot.height}
+formacion %>%
+  mutate(area_formacion_IN = fct_reorder(area_formacion_IN, n)) %>%
+  mutate(area_formacion_IN = fct_relevel(area_formacion_IN, "Other", after = 0)) |> 
+  ggplot(aes(area_formacion_IN, por)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("")+
+  xlab("") +
+  ylab("Percentage (%)") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal(base_size = base_size)
+
+
+```
+
+```{r}
+
+invest <- participantes %>% 
+  filter(!is.na(investigacion_IN)) %>%
+  count(investigacion_IN) %>% 
+  mutate(investigacion_IN = ifelse(investigacion_IN == "No", "No", "Yes")) %>%
+  mutate(
+    por = round(n/ sum(n) * 100,1),
+    etiqueta = paste0(investigacion_IN, " (", por, "%)"))
+
+max <- participantes %>%
+  filter(!is.na(investigacion_anios), investigacion_anios >= 20) %>%
+  count()
+
+anios <- IC_funcion(data = participantes, variable = "investigacion_anios")
+
+```
+
+### Do they participate in research projects? (n = `r sum(invest$n)`, `r round(sum(invest$n)/nrow(participantes)*100,1)`%)
+
+Out of the people who signed up, `r invest$por[2]`% (n = `r invest$n[2]`) participates in research projects. Of those participants, 50% (n = `r round(nrow(invest)/2,0)`) have less than `r median(participantes$investigacion_anios, na.rm = TRUE)` years of experience. Those who participate in research (`r invest$por[2]`%, n = `r invest$n[2]`) have an average of `r anios$media` (sd = `r anios$DE`, IC = `r anios$IC`) years of experience. A small group of them (`r round(max$n[1]/invest$n[2]*100,1)`%, n = `r max$n[1]`) has more than 20 years of experience.
+
+#### Figure 4. Percentage of the people who signed up who participate in research projects.
+
+```{r}
+
+hsize <- 2
+
+invest <- invest %>% 
+  mutate(x = hsize)
+
+invest %>%
+  ggplot(aes(x = hsize, y = por, fill = investigacion_IN)) +
+  geom_col() +
+  geom_label(aes(label = paste(investigacion_IN, "\n", por, "%")),
+             position = position_stack(vjust = 0.5), 
+             color = "white",
+             label.size = 1,
+             size = base_size*.5) +
+  coord_polar(theta = "y") +
+  scale_fill_manual(values = c("#00506fff", "#c63838ff")) +
+  xlim(c(0.2, hsize + 0.5)) +
+  theme(panel.background = element_rect(fill = "white"),
+        panel.grid = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        legend.position = "none")
+
+```
+
+#### Figure 5. Years of experience in research for the people who participate in a research project.
+
+```{r}
+
+participantes %>%
+  filter(!is.na(investigacion_anios)) %>%
+  ggplot(aes(x = investigacion_anios)) +
+  geom_histogram(fill = "#C63838", color = "white") +
+  theme_minimal(base_size = base_size) +
+  labs(x = "Years of experience", y = "Count") +
+  theme(axis.text = element_text(size = 20),
+        axis.title = element_text(size = 30))
+
+
+
+```
+
+```{r}
+
+
+grupos <- participantes |>
+  filter(!is.na(grupo_IN)) |>
+  separate_rows(grupo_IN, sep = ", ") |>
+  count(grupo_IN) |>
+  arrange(desc(n)) |>
+  mutate(grupo_IN = fct_relevel(grupo_IN, "Other", after = Inf)) |>
+  mutate(por = n/nrow(participantes))
+
+plot.height = n_distinct(grupos$grupo_IN)*0.5+0.5
+  
+
+
+```
+
+### Are they members of groups underrepresented in science? (n = `r sum(grupos$n)`, `r round(sum(grupos$n)/nrow(participantes)*100,1)`%)
+
+Among the `r sum(grupos$n)` persons (`r round(sum(grupos$n)/nrow(participantes)*100,1)`%) who answered this question, `r round(grupos$n[1]/sum(grupos$n)*100,1)`% (n = `r grupos$n[1]`) are women or belong to other minoritized genders and the `r round(grupos$n[2]/sum(grupos$n)*100,1)`% (n = `r grupos$n[2]`) are from disadvantaged socioeconomic backgrounds. The remaining groups are people that identify as afro-descendant population, people with disabilities, indigenous people, and others (less than 2% each).
+
+#### Figure 6. Underrepresented groups in technical and scientific contexts with which participants identify.
+
+```{r, fig.width=7, fig.height=plot.height}
+
+
+
+grupos %>%
+  mutate(por = por*100) |> 
+  mutate(grupo_IN = fct_reorder(grupo_IN, n)) %>%
+  mutate(grupo_IN = fct_relevel(grupo_IN, "Other", after = 0)) |> 
+  ggplot(aes(grupo_IN, por)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("")+
+  xlab("") +
+  ylab("Percentage (%)") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal(base_size = base_size) +
+  labs(caption = "More than one option can be selected")
+```
+
+The total percentage exceeded 100% because participants were asked to choose all the categories that could represent their intersectionalities of underrepresentation in science.
+
+## Accessibility
+
+```{r}
+
+accesibilidad <- participantes |>
+  filter(!is.na(accesibilidad_IN)) |>
+  separate_rows(accesibilidad_IN, sep = ", ") |>
+  count(accesibilidad_IN) |>
+  arrange(desc(n)) |>
+  mutate(accesibilidad_IN = fct_relevel(accesibilidad_IN, "Other", after = Inf)) |>
+  mutate(por = n/nrow(participantes))
+
+plot.height = n_distinct(accesibilidad$accesibilidad_IN)*0.5+0.5
+
+```
+
+### What are their accessibility requirements? (n = `r sum(accesibilidad$n)`, `r round(sum(accesibilidad$n)/nrow(participantes)*100,1)`%)
+
+This question was completed by `r sum(accesibilidad$n)` people, `r round(sum(accesibilidad$n)/nrow(participantes)*100,1)`% of all registered participants. Among those who answered, the most frequent request is "`r accesibilidad$accesibilidad_IN[1]`" (`r round(accesibilidad$por[1]*100,1)`%, n = `r accesibilidad$n[1]`), followed by `r  accesibilidad$accesibilidad_IN[2]` (`r round(accesibilidad$por[2]*100,1)`%, n = `r accesibilidad$n[2]`). The remaining `r round(sum(accesibilidad$por[3:nrow(accesibilidad)])*100,1)`% (n = `r sum(accesibilidad$n[3:nrow(accesibilidad)])`) corresponds to people who requested `r str_c(accesibilidad$accesibilidad_IN[4:nrow(accesibilidad)], collapse = "and ")`.
+
+#### Figure 7. Accessibility requirements by participants.
+
+```{r, fig.width=7, fig.height=plot.height}
+accesibilidad  %>% 
+  mutate(por = por*100) |> 
+  mutate(accesibilidad_IN = fct_reorder(accesibilidad_IN, n)) %>%
+  mutate(accesibilidad_IN = fct_relevel(accesibilidad_IN, "Other", after = 0)) |> 
+  ggplot(aes(accesibilidad_IN, por)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("")+
+  xlab("") +
+  ylab("Percentage (%)") +
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal(base_size = base_size)
+```
+
+## Background in Open Science before attending ALTa Ciencia Abierta 1 2024
+
+```{r}
+publicacion <- participantes %>% 
+  select(conoces_proyecto_IN:conoces_resultados2_IN) %>% 
+   mutate_all(~ ifelse(. == "Does not apply/Don't know/Prefer not to answer", NA, .))
+
+publicacion <- publicacion[rowSums(is.na(publicacion)) != ncol(publicacion), ]
+
+
+```
+
+### What is their knowledge about open publishing? (n = `r nrow(publicacion)`, `r round(nrow(publicacion)/nrow(participantes)*100,1)`%)
+
+```{r}
+
+
+publicacion2 <- publicacion %>% 
+  pivot_longer(cols = everything(),
+               names_to = "Medida",
+               values_to = "Valor") %>% 
+  mutate(Medida = fct_recode(Medida, 
+                             `Pre-register a research project` = "conoces_proyecto_IN",
+                             `Data management plan` = "conoces_pgd_IN",
+                             `Hypothesis and analysis plan` = "conoces_hipotesis_IN",
+                             `Data collected` = "conoces_datos_IN",
+                             `Code` = "conoces_codigo_IN",
+                             `Instruments` = "conoces_instrumentos_IN",
+                             `Results in Open Access journals` = "conoces_resultados1_IN",
+                             `Results in alternative media` = "conoces_resultados2_IN")) %>% 
+  mutate(Valor = fct_relevel(Valor, "I don't know this practice",
+                             "I know this practice but have never applied it",
+                             "I have applied this practice")) %>% 
+  filter(!is.na(Valor))
+
+
+
+
+porcentaje <- publicacion2 %>% 
+              group_by(Medida, Valor) %>%
+              tally() %>%
+              mutate(p = n/sum(n)) %>%
+              ungroup() 
+
+Medidas_ordenado <- porcentaje %>% 
+  filter(Valor == "I have applied this practice") %>% 
+  arrange(n) %>% 
+  pull(Medida)
+
+porcentaje$Medida <- factor(porcentaje$Medida, levels = Medidas_ordenado)
+
+
+conocidas_p <- porcentaje %>%
+    pivot_wider(id_cols = Medida,
+              names_from = Valor,
+              values_from = p) %>%
+  mutate(Medida = str_to_lower(Medida)) %>%
+  arrange(desc(`I have applied this practice`), desc(`I know this practice but have never applied it`)) %>%
+  rowwise() %>%
+  mutate(conocida = sum(`I know this practice but have never applied it`, `I have applied this practice`)*100)
+
+conocidas_n <- porcentaje %>%
+    pivot_wider(id_cols = Medida,
+              names_from = Valor,
+              values_from = n) %>%
+  mutate(Medida = str_to_lower(Medida)) %>%
+  arrange(desc(`I have applied this practice`), desc(`I know this practice but have never applied it`)) %>%
+  rowwise() %>%
+  mutate(conocida = sum(`I know this practice but have never applied it`, `I have applied this practice`))
+
+desconocidas_p <- conocidas_p %>%
+  arrange(desc(`I don't know this practice`))
+
+desconocidas_n <- conocidas_n %>%
+  arrange(desc(`I don't know this practice`))
+
+
+
+plot.height = n_distinct(porcentaje$Medida)*0.5+1
+
+```
+
+A total of `r nrow(publicacion)` participants (`r sprintf('%.1f', nrow(publicacion)/nrow(participantes)*100)`%) answered questions regarding the practice of openly publishing various products of their research process. Not everyone answered this question for all research products. Table 1 details the number of answers for each product.
+
+```{r}
+
+publicacion2 %>%
+  count(Medida) %>%
+  knitr::kable(col.names = c("Open practice", "N responses"),
+               caption = "Table 1. Number of participants that answered regarding each open product.")
+
+```
+
+Figure 12 shows that:
+
+-   The most well-known practice was openly publishing the `r conocidas_p$Medida[1]` (`r sprintf('%.1f', conocidas_p[1,3]*100)`% - n = `r conocidas_n[1,3]` of the participants mentioned knowing this practice, while `r sprintf('%.1f', conocidas_p[1,4]*100)`% - n = `r conocidas_n[1,4]` - had already applied it).
+
+-   The least known practices were openly publishing the `r str_c(desconocidas_p$Medida[1:3], collapse = ", ")` and pre-registration, each with less than `r str_c(sprintf('%.1f', (desconocidas_p[[2]][1:3]*100)), "% (n = ", desconocidas_n[[2]][1:3], ")", collapse = ", ")` respectively.
+
+#### Figure 8. Participants' knowledge regarding various Open Science practices.
+
+```{r, fig.width=7, fig.height=plot.height}
+porcentaje %>%
+  ggplot(aes(x = Medida, y = p, fill = Valor)) +
+  geom_bar(position = "fill", stat = "identity") +
+  labs(y = "", x = "", fill = "") +
+  theme_minimal(base_size = base_size) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(labels = function(x) str_wrap(x, width =25), values = c("#f67a21ff", "#00506fff", "#c63838ff")) +
+  geom_text(aes(y = p, label = scales::percent(p, accuracy = 0.1)),
+            position = position_stack(vjust = 0.5),
+            show.legend = FALSE, color = "white") +
+  coord_flip() +
+  theme(    legend.position = "bottom",
+    legend.justification = c(0, 0),  # Justify the legend to the left
+    legend.box.just = "left",
+    legend.margin = margin(t = 0, r = 0, b = 0, l = -200),  # Adjust left margin to move the legend leftwards
+    panel.grid = element_blank()) +
+    guides(fill = guide_legend(reverse = TRUE))
+
+```
+
+```{r}
+importancia <- participantes %>% 
+  select(importante_preregistrar_IN:importante_resultados2_IN) %>%
+  mutate_all(~ ifelse(str_detect(.,"I don't know"), NA, .))
+
+importancia <- importancia[rowSums(is.na(importancia)) != ncol(importancia), ]
+
+```
+
+### How important do they think open practices are? (n = `r nrow(importancia)`, `r round(nrow(importancia)/nrow(participantes)*100,1)`%)
+
+```{r}
+
+
+importancia2 <- importancia %>% 
+  pivot_longer(cols = everything(),
+               names_to = "Medida",
+               values_to = "Valor") %>% 
+  mutate(Medida = fct_recode(Medida, 
+                             `Preregister project` = "importante_preregistrar_IN",
+                             `Publish instruments` = "importante_instrumentos_IN",
+                             `Publish data` = "importante_datos_IN",
+                             `Publish code` = "importante_codigo_IN",
+                             `Publish results in open academic journals` = "importante_resultados1_IN",
+                             `Disseminate results in alternative media` = "importante_resultados2_IN")) %>% 
+  mutate(Valor = ifelse(Valor %in% c("Slightly important", "Not important"), "Less or not important", Valor),
+         Valor = fct_relevel(Valor, "Less or not important",
+                             "Neutral",
+                             "Important",
+                             "Very important")) %>%
+  filter(!is.na(Valor))
+
+porcentaje <- importancia2 %>% 
+              group_by(Medida, Valor) %>%
+              tally() %>%
+              mutate(p = n/sum(n)) %>%
+              ungroup() %>%
+  mutate(etiqueta = ifelse(p < .059, NA, round(p,2)))
+
+Medidas_ordenado <- porcentaje %>% 
+  filter(Valor == "Very important") %>% 
+  arrange(n) %>% 
+  pull(Medida) 
+
+porcentaje$Medida <- factor(porcentaje$Medida, levels = Medidas_ordenado)
+
+
+
+# Práctica que más personas consideran muy importante
+very_important <- porcentaje %>%
+  filter(Valor == "Very important") %>%
+  mutate(p = p*100) %>%
+  arrange(desc(p)) %>%
+  slice(1)
+
+# Práctica que más personas consideran poco o no importante
+not_important <- porcentaje %>%
+  filter(Valor == "Less or not important") %>%
+  mutate(p = p*100) %>%
+  arrange(desc(p)) %>%
+  slice(1)
+
+
+plot.height = n_distinct(porcentaje$Medida)*0.5+1
+
+
+```
+
+The practice identified as very important most often was "`r very_important$Medida`" (`r sprintf('%.1f', very_important$p)`%, n = `r very_important$n`), while the practice that most people considered of little to no importance was "`r not_important$Medida`" (`r sprintf('%.1f', not_important$p)`%, n = `r not_important$n`).
+
+#### Figure 9. Levels of importance assigned to various Open Science practices by participants.
+
+```{r, fig.width=7, fig.height=plot.height}
+
+porcentaje %>%  
+  ggplot(aes(x = p, y = Medida, fill = Valor)) +
+  geom_bar(position = "fill", stat = "identity") +
+  labs(y = "", x = "", fill = "") +
+  scale_fill_manual(labels = function(x) str_wrap(x, width = 20), values = c("#5cb3c1", "#f67a21ff", "#00506fff", "#c63838ff")) +
+  theme_minimal(base_size = base_size) +
+  scale_x_continuous(labels = scales::percent) +
+  geom_text(aes(x = etiqueta, label = scales::percent(etiqueta, accuracy = 0.1)),
+            position = position_stack(vjust = 0.5),
+            show.legend = FALSE, color = "white") +
+  theme(
+    legend.position = "bottom",
+    legend.justification = c(0, 0),  # Justify the legend to the left
+    legend.box.just = "left",
+    legend.margin = margin(t = 0, r = 0, b = 0, l = -200),  # Adjust left margin to move the legend leftwards
+    panel.grid = element_blank()
+  ) +
+    guides(fill = guide_legend(reverse = TRUE))
+
+```
+
+```{r}
+incentivar <- participantes %>%
+  filter(!is.na(animas_IN)) %>%
+  select(animas_IN)
+
+incentivar2 <- incentivar %>%
+  separate_rows(animas_IN, sep = ", ") |>
+  filter(!is.na(animas_IN)) |>
+  count(animas_IN) |>
+  filter(animas_IN != "NA") |> 
+  arrange(desc(n)) %>% 
+  mutate(por = n/nrow(participantes))
+
+
+plot.height = n_distinct(incentivar2$animas_IN)*0.5+0.5
+
+```
+
+### Do they encourage other people to practice open science? (n = `r nrow(incentivar)`, `r round(nrow(incentivar)/nrow(participantes)*100,1)`%)
+
+We asked participants if they encouraged other professionals, researchers, their coworkers, or their students or advisees to implement various open practices. Resultas show than more than 50% of respondants, incentivize others to publish results in open access journals and disseminate them through alternative media, such as social media, blogposts, etc. While the practice they report encouraging the less is publishing data or code openly. 
+
+
+
+#### Figure 10. Open practices the participants encourage others to implement.
+
+```{r, fig.width=7, fig.height=plot.height}
+incentivar2 %>%
+  ggplot(aes(fct_reorder(animas_IN, por), por)) +
+  geom_bar(stat = "identity",fill="#c83737") +
+  ggtitle("")+
+  coord_flip() +
+  scale_y_continuous(expand = c(0,0)) +
+  theme_minimal(base_size = base_size) +
+  labs(caption = "More than one option can be selected.", y = "Percentage (%)", x = "")
+
+```
+
+The total percentage exceeded 100% because participants were asked to choose all the practices they encouraged others to implement.
+
+### Final remarks
+
+The data collected from participants of ALTa Ciencia Abierta 2024 offers a valuable snapshot of the current landscape of researchers and technical staff engaging with Open Science in Latin America. With representation from 19 countries, a wide range of academic backgrounds, and diverse levels of experience in research, this community exemplifies both the richness and the heterogeneity of the region’s scientific ecosystem.
+
+Out of all participats conducting research, almost half identify as belonging to one or more underrepresented groups in science. This reinforces the importance of designing inclusive training spaces that recognize and support intersectional identities and trajectories.
+
+The results also show that while there is strong appreciation for Open Science values, especially in regard to publishing research results in open journals and sharing through alternative media, certain practices such as preregistration, data management planning, and code sharing remain less familiar or less commonly adopted. This gap highlights the need for further training, mentoring, and community-building efforts to lower the barriers to implementation and foster a culture of openness that is both robust and context-sensitive.
+
+As we move forward, this baseline information will help guide the adaptation of future training materials and the development of targeted support strategies that align with the realities of Latin American researchers. In this way, ALTa Ciencia Abierta continues to contribute to a more inclusive, equitable, and collaborative scientific future.
+

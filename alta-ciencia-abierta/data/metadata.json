@@ -1,0 +1,282 @@
+{
+  "title": "datos_anonimizados.xlsx",
+  "description": "Este dataset contiene información sobre los participantes de las ediciones 1 a 3 de Alta Ciencia Abierta que firmaron un consentimiento informado y aceptaron compartir sus datos de forma anónima.",
+  "creator": [
+    {
+      "name": "Jesica Formoso",
+      "orcid": "0000-0003-3062-4036",
+      "affiliation": "CIIPME-CONICET / MetaDocencia"
+    }
+  ],
+  "created": "2025-04-23",
+  "language": "es",
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "ciencia abierta",
+    "cursos virtuales",
+    "investigadores",
+    "investigadoras",
+    "personal técnico",
+    "MetaDocencia"
+  ],
+  "format": "csv",
+  "variables": [
+    {
+      "name": "pronombre_IN",
+      "type": "string",
+      "description": "Self-identified pronoun of the participant [English]."
+    },
+    {
+      "name": "accesibilidad_IN",
+      "type": "string",
+      "description": "Indicates whether the participant requested any accessibility support during the training or event [English]."
+    },
+    {
+      "name": "accesibilidad_categoria_IN",
+      "type": "string",
+      "description": "Specific type of accessibility support requested (e.g., screen reader, captioning, color contrast) [English]."
+    },
+    {
+      "name": "conociste_MD_IN",
+      "type": "string",
+      "description": "Channel or source through which the participant first heard about MetaDocencia (e.g., social media, recommendation, website) [English]."
+    },
+    {
+      "name": "pais_IN",
+      "type": "string",
+      "description": "Country of residence of the participant at the time of the survey [English]."
+    },
+    {
+      "name": "grupo_IN",
+      "type": "string",
+      "description": "Underrepresented or marginalized group in science with which the participant identifies, if any [English]."
+    },
+    {
+      "name": "nivel_educativo_IN",
+      "type": "string",
+      "description": "Highest level of formal education completed by the participant [English]."
+    },
+    {
+      "name": "area_formacion_IN",
+      "type": "string",
+      "description": "Participant’s field of academic training or disciplinary background (e.g., Social Sciences, Engineering, Humanities) [English]."
+    },
+    {
+      "name": "investigacion_IN",
+      "type": "string",
+      "description": "Indicates whether the participant currently engages in research activities [English]."
+    },
+    {
+      "name": "conoces_proyecto_IN",
+      "type": "string",
+      "description": "Participant's familiarity with preregistration of research projects as an open science practice [English]."
+    },
+    {
+      "name": "conoces_pgd_IN",
+      "type": "string",
+      "description": "Participant's familiarity with publishing a data management plan openly [English]."
+    },
+    {
+      "name": "conoces_hipotesis_IN",
+      "type": "string",
+      "description": "Participant's familiarity with the open sharing of research hypotheses [English]."
+    },
+    {
+      "name": "conoces_datos_IN",
+      "type": "string",
+      "description": "Participant's familiarity with openly sharing research data [English]."
+    },
+    {
+      "name": "conoces_codigo_IN",
+      "type": "string",
+      "description": "Participant's familiarity with openly sharing research code [English]."
+    },
+    {
+      "name": "conoces_instrumentos_IN",
+      "type": "string",
+      "description": "Participant's familiarity with openly sharing research instruments such as surveys or protocols [English]."
+    },
+    {
+      "name": "conoces_resultados1_IN",
+      "type": "string",
+      "description": "Participant's experience or familiarity with publishing research results openly in academic journals [English]."
+    },
+    {
+      "name": "conoces_resultados2_IN",
+      "type": "string",
+      "description": "Participant's experience or familiarity with publishing research results in alternative formats (e.g., blogs, podcasts) [English]."
+    },
+    {
+      "name": "animas_IN",
+      "type": "string",
+      "description": "Indicates whether and how the participant encourages others to adopt open science practices [English]."
+    },
+    {
+      "name": "importante_preregistrar_IN",
+      "type": "string",
+      "description": "Participant's perceived importance of preregistering research projects [English]."
+    },
+    {
+      "name": "importante_instrumentos_IN",
+      "type": "string",
+      "description": "Participant's perceived importance of sharing research instruments openly [English]."
+    },
+    {
+      "name": "importante_datos_IN",
+      "type": "string",
+      "description": "Participant's perceived importance of openly sharing research data [English]."
+    },
+    {
+      "name": "importante_codigo_IN",
+      "type": "string",
+      "description": "Participant's perceived importance of openly sharing research code [English]."
+    },
+    {
+      "name": "importante_resultados1_IN",
+      "type": "string",
+      "description": "Participant's perceived importance of publishing research results in open academic journals [English]."
+    },
+    {
+      "name": "importante_resultados2_IN",
+      "type": "string",
+      "description": "Participant's perceived importance of publishing research results in alternative open formats such as blogs or podcasts [English]."
+    },
+    {
+      "name": "cohorte",
+      "type": "string",
+      "description": "Variable collected during the MetaDocencia Alta Ciencia Abierta workshops [description not yet provided]."
+    },
+    {
+      "name": "pronombre_ES",
+      "type": "string",
+      "description": "Self-identified pronoun of the participante [Spanish]."
+    },
+    {
+      "name": "accesibilidad_categoria_ES",
+      "type": "string",
+      "description": "Specific type of accessibility support requested (e.g., screen reader, captioning, color contrast) [Spanish]."
+    },
+    {
+      "name": "conociste_MD_ES",
+      "type": "string",
+      "description": "Channel or source through which the participante first heard about MetaDocencia (e.g., social media, recommendation, website) [Spanish]."
+    },
+    {
+      "name": "pais_ES",
+      "type": "string",
+      "description": "Country of residence of the participante at the time of the survey [Spanish]."
+    },
+    {
+      "name": "nivel_educativo_ES",
+      "type": "string",
+      "description": "Highest level of formal education completed by the participante [Spanish]."
+    },
+    {
+      "name": "area_formacion_ES",
+      "type": "string",
+      "description": "Participant’s field of academic training or disciplinary background (e.g., Social Sciences, Engineering, Humanities) [Spanish]."
+    },
+    {
+      "name": "investigacion_ES",
+      "type": "string",
+      "description": "Indicates whether the participante currently engages in research activities [Spanish]."
+    },
+    {
+      "name": "investigacion_anios",
+      "type": "string",
+      "description": "Variable collected during the MetaDocencia Alta Ciencia Abierta workshops [description not yet provided]."
+    },
+    {
+      "name": "conoces_proyecto_ES",
+      "type": "string",
+      "description": "Participant's familiarity with preregistration of research projects as an open science practice [Spanish]."
+    },
+    {
+      "name": "conoces_pgd_ES",
+      "type": "string",
+      "description": "Participant's familiarity with publishing a data management plan openly [Spanish]."
+    },
+    {
+      "name": "conoces_hipotesis_ES",
+      "type": "string",
+      "description": "Participant's familiarity with the open sharing of research hypotheses [Spanish]."
+    },
+    {
+      "name": "conoces_datos_ES",
+      "type": "string",
+      "description": "Participant's familiarity with openly sharing research data [Spanish]."
+    },
+    {
+      "name": "conoces_codigo_ES",
+      "type": "string",
+      "description": "Participant's familiarity with openly sharing research code [Spanish]."
+    },
+    {
+      "name": "conoces_instrumentos_ES",
+      "type": "string",
+      "description": "Participant's familiarity with openly sharing research instruments such as surveys or protocols [Spanish]."
+    },
+    {
+      "name": "conoces_resultados1_ES",
+      "type": "string",
+      "description": "Participant's experience or familiarity with publishing research results openly in academic journals [Spanish]."
+    },
+    {
+      "name": "conoces_resultados2_ES",
+      "type": "string",
+      "description": "Participant's experience or familiarity with publishing research results in alternative formats (e.g., blogs, podcasts) [Spanish]."
+    },
+    {
+      "name": "importante_preregistrar_ES",
+      "type": "string",
+      "description": "Participant's perceived importance of preregistering research projects [Spanish]."
+    },
+    {
+      "name": "importante_instrumentos_ES",
+      "type": "string",
+      "description": "Participant's perceived importance of sharing research instruments openly [Spanish]."
+    },
+    {
+      "name": "importante_datos_ES",
+      "type": "string",
+      "description": "Participant's perceived importance of openly sharing research data [Spanish]."
+    },
+    {
+      "name": "importante_codigo_ES",
+      "type": "string",
+      "description": "Participant's perceived importance of openly sharing research code [Spanish]."
+    },
+    {
+      "name": "importante_resultados1_ES",
+      "type": "string",
+      "description": "Participant's perceived importance of publishing research results in open academic journals [Spanish]."
+    },
+    {
+      "name": "importante_resultados2_ES",
+      "type": "string",
+      "description": "Participant's perceived importance of publishing research results in alternative open formats such as blogs or podcasts [Spanish]."
+    },
+    {
+      "name": "iso_a3",
+      "type": "string",
+      "description": "Variable collected during the MetaDocencia Alta Ciencia Abierta workshops [description not yet provided]."
+    },
+    {
+      "name": "grupo_ES",
+      "type": "string",
+      "description": "Underrepresented or marginalized group in science with which the participante identifies, if any [Spanish]."
+    },
+    {
+      "name": "accesibilidad_ES",
+      "type": "string",
+      "description": "Indicates whether the participante requested any accessibility support during the training or event [Spanish]."
+    },
+    {
+      "name": "animas_ES",
+      "type": "string",
+      "description": "Indicates whether and how the participante encourages others to adopt open science practices [Spanish]."
+    }
+  ],
+  "source": "MetaDocencia",
+  "notes": "Los datos se actualizaron por última vez en abril de 2025"
+}

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ALTa Ciencia Abierta (Latin American contextualization of NASA’s Open Science 101 course)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="alta-ca_files/libs/clipboard/clipboard.min.js"></script>
+<script src="alta-ca_files/libs/quarto-html/quarto.js"></script>
+<script src="alta-ca_files/libs/quarto-html/popper.min.js"></script>
+<script src="alta-ca_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="alta-ca_files/libs/quarto-html/anchor.min.js"></script>
+<link href="alta-ca_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="alta-ca_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="alta-ca_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="alta-ca_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="alta-ca_files/libs/bootstrap/bootstrap-dec119f7a967689bbc7629a52aff4ca0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#meet-the-attendees" id="toc-meet-the-attendees" class="nav-link active" data-scroll-target="#meet-the-attendees">Meet the attendees!</a>
+  <ul class="collapse">
+  <li><a href="#where-do-they-come-from-n-215-99.1" id="toc-where-do-they-come-from-n-215-99.1" class="nav-link" data-scroll-target="#where-do-they-come-from-n-215-99.1">Where do they come from? (n = 215, 99.1%)</a></li>
+  <li><a href="#what-is-their-educational-level-n-215-99.1" id="toc-what-is-their-educational-level-n-215-99.1" class="nav-link" data-scroll-target="#what-is-their-educational-level-n-215-99.1">What is their educational level? (n = 215, 99.1%)</a></li>
+  <li><a href="#what-is-their-field-of-study-n-217-100" id="toc-what-is-their-field-of-study-n-217-100" class="nav-link" data-scroll-target="#what-is-their-field-of-study-n-217-100">What is their field of study? (n = 217, 100%)</a></li>
+  <li><a href="#do-they-participate-in-research-projects-n-216-99.5" id="toc-do-they-participate-in-research-projects-n-216-99.5" class="nav-link" data-scroll-target="#do-they-participate-in-research-projects-n-216-99.5">Do they participate in research projects? (n = 216, 99.5%)</a></li>
+  <li><a href="#are-they-members-of-groups-underrepresented-in-science-n-107-49.3" id="toc-are-they-members-of-groups-underrepresented-in-science-n-107-49.3" class="nav-link" data-scroll-target="#are-they-members-of-groups-underrepresented-in-science-n-107-49.3">Are they members of groups underrepresented in science? (n = 107, 49.3%)</a></li>
+  </ul></li>
+  <li><a href="#accessibility" id="toc-accessibility" class="nav-link" data-scroll-target="#accessibility">Accessibility</a>
+  <ul class="collapse">
+  <li><a href="#what-are-their-accessibility-requirements-n-122-56.2" id="toc-what-are-their-accessibility-requirements-n-122-56.2" class="nav-link" data-scroll-target="#what-are-their-accessibility-requirements-n-122-56.2">What are their accessibility requirements? (n = 122, 56.2%)</a></li>
+  </ul></li>
+  <li><a href="#background-in-open-science-before-attending-alta-ciencia-abierta-1-2024" id="toc-background-in-open-science-before-attending-alta-ciencia-abierta-1-2024" class="nav-link" data-scroll-target="#background-in-open-science-before-attending-alta-ciencia-abierta-1-2024">Background in Open Science before attending ALTa Ciencia Abierta 1 2024</a>
+  <ul class="collapse">
+  <li><a href="#what-is-their-knowledge-about-open-publishing-n-206-94.9" id="toc-what-is-their-knowledge-about-open-publishing-n-206-94.9" class="nav-link" data-scroll-target="#what-is-their-knowledge-about-open-publishing-n-206-94.9">What is their knowledge about open publishing? (n = 206, 94.9%)</a></li>
+  <li><a href="#how-important-do-they-think-open-practices-are-n-204-94" id="toc-how-important-do-they-think-open-practices-are-n-204-94" class="nav-link" data-scroll-target="#how-important-do-they-think-open-practices-are-n-204-94">How important do they think open practices are? (n = 204, 94%)</a></li>
+  <li><a href="#do-they-encourage-other-people-to-practice-open-science-n-175-80.6" id="toc-do-they-encourage-other-people-to-practice-open-science-n-175-80.6" class="nav-link" data-scroll-target="#do-they-encourage-other-people-to-practice-open-science-n-175-80.6">Do they encourage other people to practice open science? (n = 175, 80.6%)</a></li>
+  <li><a href="#final-remarks" id="toc-final-remarks" class="nav-link" data-scroll-target="#final-remarks">Final remarks</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="README.md"><i class="bi bi-file-code"></i>Github (GFM)</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">ALTa Ciencia Abierta (Latin American contextualization of NASA’s Open Science 101 course)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><em>Note: The following report is created based on the responses of participants that signed an informed consent to publish their data. This data correspond to a 44% of the actual participants.</em></p>
+<section id="meet-the-attendees" class="level2">
+<h2 class="anchored" data-anchor-id="meet-the-attendees">Meet the attendees!</h2>
+<section id="where-do-they-come-from-n-215-99.1" class="level3">
+<h3 class="anchored" data-anchor-id="where-do-they-come-from-n-215-99.1">Where do they come from? (n = 215, 99.1%)</h3>
+<p>A total of 217 participants signed up from 19 countries, 43.26% (n = 93) from Argentina, followed by 10.23% (n = 22) from Ecuador and 9.77% (n = 21) from Mexico. The remaining 36.79% (n = 79) were from Bolivia, Colombia, Peru, Venezuela, Chile, El Salvador, Paraguay, Brazil, Cuba, Uruguay, Nicaragua, Spain, Guatemala, Honduras, India and Poland.</p>
+<section id="figure-1.-country-of-residence-of-the-people-who-signed-up" class="level4">
+<h4 class="anchored" data-anchor-id="figure-1.-country-of-residence-of-the-people-who-signed-up">Figure 1. Country of residence of the people who signed up</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="what-is-their-educational-level-n-215-99.1" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-their-educational-level-n-215-99.1">What is their educational level? (n = 215, 99.1%)</h3>
+<p>A 16.3% (n = 35) has completed a graduate degree, 13.5% (n = 29) completed some graduate courses, 13.5% (n = 29) completed an undergraduate degree, 45.1% (n = 97) has taken or is currently taking undergraduate courses and 21.4% (n = 46) completed high school.</p>
+<section id="figure-2.-educational-level-of-the-people-who-signed-up" class="level4">
+<h4 class="anchored" data-anchor-id="figure-2.-educational-level-of-the-people-who-signed-up">Figure 2. Educational level of the people who signed up</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="what-is-their-field-of-study-n-217-100" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-their-field-of-study-n-217-100">What is their field of study? (n = 217, 100%)</h3>
+<p>We have attendees from 6 different fields of study. A 25.3% (n = 55) correspond to Exact and Natural Sciences, followed by a 24% (n = 52) corresponding to Social Sciences and a 22.6% (n = 49) to Engineering, Technology and Architecture. The remaining 28.1% (n = 61) are people from the following fields: Health Sciences, Humanities, Other.</p>
+<section id="figure-3.-field-of-study-of-the-people-who-signed-up" class="level4">
+<h4 class="anchored" data-anchor-id="figure-3.-field-of-study-of-the-people-who-signed-up">Figure 3. Field of study of the people who signed up</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="do-they-participate-in-research-projects-n-216-99.5" class="level3">
+<h3 class="anchored" data-anchor-id="do-they-participate-in-research-projects-n-216-99.5">Do they participate in research projects? (n = 216, 99.5%)</h3>
+<p>Out of the people who signed up, 77.8% (n = 168) participates in research projects. Of those participants, 50% (n = 1) have less than 5 years of experience. Those who participate in research (77.8%, n = 168) have an average of 8.3 (sd = 8.4, IC = 7.0, 9.6) years of experience. A small group of them (13.1%, n = 22) has more than 20 years of experience.</p>
+<section id="figure-4.-percentage-of-the-people-who-signed-up-who-participate-in-research-projects." class="level4">
+<h4 class="anchored" data-anchor-id="figure-4.-percentage-of-the-people-who-signed-up-who-participate-in-research-projects.">Figure 4. Percentage of the people who signed up who participate in research projects.</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="figure-5.-years-of-experience-in-research-for-the-people-who-participate-in-a-research-project." class="level4">
+<h4 class="anchored" data-anchor-id="figure-5.-years-of-experience-in-research-for-the-people-who-participate-in-a-research-project.">Figure 5. Years of experience in research for the people who participate in a research project.</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="are-they-members-of-groups-underrepresented-in-science-n-107-49.3" class="level3">
+<h3 class="anchored" data-anchor-id="are-they-members-of-groups-underrepresented-in-science-n-107-49.3">Are they members of groups underrepresented in science? (n = 107, 49.3%)</h3>
+<p>Among the 107 persons (49.3%) who answered this question, 61.7% (n = 66) are women or belong to other minoritized genders and the 27.1% (n = 29) are from disadvantaged socioeconomic backgrounds. The remaining groups are people that identify as afro-descendant population, people with disabilities, indigenous people, and others (less than 2% each).</p>
+<section id="figure-6.-underrepresented-groups-in-technical-and-scientific-contexts-with-which-participants-identify." class="level4">
+<h4 class="anchored" data-anchor-id="figure-6.-underrepresented-groups-in-technical-and-scientific-contexts-with-which-participants-identify.">Figure 6. Underrepresented groups in technical and scientific contexts with which participants identify.</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The total percentage exceeded 100% because participants were asked to choose all the categories that could represent their intersectionalities of underrepresentation in science.</p>
+</section>
+</section>
+</section>
+<section id="accessibility" class="level2">
+<h2 class="anchored" data-anchor-id="accessibility">Accessibility</h2>
+<section id="what-are-their-accessibility-requirements-n-122-56.2" class="level3">
+<h3 class="anchored" data-anchor-id="what-are-their-accessibility-requirements-n-122-56.2">What are their accessibility requirements? (n = 122, 56.2%)</h3>
+<p>This question was completed by 122 people, 56.2% of all registered participants. Among those who answered, the most frequent request is “Record and share the video” (31.3%, n = 68), followed by Alternatives for unstable connection (12.4%, n = 27). The remaining 12.4% (n = 27) corresponds to people who requested Speak with a clear and calm voiceand Provide live captions.</p>
+<section id="figure-7.-accessibility-requirements-by-participants." class="level4">
+<h4 class="anchored" data-anchor-id="figure-7.-accessibility-requirements-by-participants.">Figure 7. Accessibility requirements by participants.</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="background-in-open-science-before-attending-alta-ciencia-abierta-1-2024" class="level2">
+<h2 class="anchored" data-anchor-id="background-in-open-science-before-attending-alta-ciencia-abierta-1-2024">Background in Open Science before attending ALTa Ciencia Abierta 1 2024</h2>
+<section id="what-is-their-knowledge-about-open-publishing-n-206-94.9" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-their-knowledge-about-open-publishing-n-206-94.9">What is their knowledge about open publishing? (n = 206, 94.9%)</h3>
+<p>A total of 206 participants (94.9%) answered questions regarding the practice of openly publishing various products of their research process. Not everyone answered this question for all research products. Table 1 details the number of answers for each product.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Table 1. Number of participants that answered regarding each open product.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Open practice</th>
+<th style="text-align: right;">N responses</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Code</td>
+<td style="text-align: right;">195</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Data collected</td>
+<td style="text-align: right;">201</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hypothesis and analysis plan</td>
+<td style="text-align: right;">199</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Instruments</td>
+<td style="text-align: right;">204</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Data management plan</td>
+<td style="text-align: right;">198</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pre-register a research project</td>
+<td style="text-align: right;">202</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Results in Open Access journals</td>
+<td style="text-align: right;">196</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Results in alternative media</td>
+<td style="text-align: right;">197</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Figure 12 shows that:</p>
+<ul>
+<li><p>The most well-known practice was openly publishing the instruments (33.3% - n = 68 of the participants mentioned knowing this practice, while 49.0% - n = 100 - had already applied it).</p></li>
+<li><p>The least known practices were openly publishing the code, hypothesis and analysis plan, data management plan and pre-registration, each with less than 29.2% (n = 57), 21.6% (n = 43), 20.7% (n = 41) respectively.</p></li>
+</ul>
+<section id="figure-8.-participants-knowledge-regarding-various-open-science-practices." class="level4">
+<h4 class="anchored" data-anchor-id="figure-8.-participants-knowledge-regarding-various-open-science-practices.">Figure 8. Participants’ knowledge regarding various Open Science practices.</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="how-important-do-they-think-open-practices-are-n-204-94" class="level3">
+<h3 class="anchored" data-anchor-id="how-important-do-they-think-open-practices-are-n-204-94">How important do they think open practices are? (n = 204, 94%)</h3>
+<p>The practice identified as very important most often was “Publish results in open academic journals” (68.9%, n = 135), while the practice that most people considered of little to no importance was “Preregister project” (5.4%, n = 10).</p>
+<section id="figure-9.-levels-of-importance-assigned-to-various-open-science-practices-by-participants." class="level4">
+<h4 class="anchored" data-anchor-id="figure-9.-levels-of-importance-assigned-to-various-open-science-practices-by-participants.">Figure 9. Levels of importance assigned to various Open Science practices by participants.</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="do-they-encourage-other-people-to-practice-open-science-n-175-80.6" class="level3">
+<h3 class="anchored" data-anchor-id="do-they-encourage-other-people-to-practice-open-science-n-175-80.6">Do they encourage other people to practice open science? (n = 175, 80.6%)</h3>
+<p>We asked participants if they encouraged other professionals, researchers, their coworkers, or their students or advisees to implement various open practices. Resultas show than more than 50% of respondants, incentivize others to publish results in open access journals and disseminate them through alternative media, such as social media, blogposts, etc. While the practice they report encouraging the less is publishing data or code openly.</p>
+<section id="figure-10.-open-practices-the-participants-encourage-others-to-implement." class="level4">
+<h4 class="anchored" data-anchor-id="figure-10.-open-practices-the-participants-encourage-others-to-implement.">Figure 10. Open practices the participants encourage others to implement.</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="alta-ca_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The total percentage exceeded 100% because participants were asked to choose all the practices they encouraged others to implement.</p>
+</section>
+</section>
+<section id="final-remarks" class="level3">
+<h3 class="anchored" data-anchor-id="final-remarks">Final remarks</h3>
+<p>The data collected from participants of ALTa Ciencia Abierta 2024 offers a valuable snapshot of the current landscape of researchers and technical staff engaging with Open Science in Latin America. With representation from 19 countries, a wide range of academic backgrounds, and diverse levels of experience in research, this community exemplifies both the richness and the heterogeneity of the region’s scientific ecosystem.</p>
+<p>Out of all participats conducting research, almost half identify as belonging to one or more underrepresented groups in science. This reinforces the importance of designing inclusive training spaces that recognize and support intersectional identities and trajectories.</p>
+<p>The results also show that while there is strong appreciation for Open Science values, especially in regard to publishing research results in open journals and sharing through alternative media, certain practices such as preregistration, data management planning, and code sharing remain less familiar or less commonly adopted. This gap highlights the need for further training, mentoring, and community-building efforts to lower the barriers to implementation and foster a culture of openness that is both robust and context-sensitive.</p>
+<p>As we move forward, this baseline information will help guide the adaptation of future training materials and the development of targeted support strategies that align with the realities of Latin American researchers. In this way, ALTa Ciencia Abierta continues to contribute to a more inclusive, equitable, and collaborative scientific future.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

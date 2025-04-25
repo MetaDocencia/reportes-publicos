@@ -1,0 +1,18 @@
+project:
+  title: "ALTa Ciencia Abierta (Open Science 101)"
+  render:
+    - alta-ca.qmd
+
+
+format: 
+  gfm: 
+    toc: true
+    output-file: README.md
+  html: 
+    toc: true
+    theme: style.scss
+
+execute: 
+  echo: false
+  warning: false
+
