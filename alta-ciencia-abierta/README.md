@@ -1,5 +1,4 @@
-# ALTa Ciencia Abierta (Latin American contextualization of NASA’s Open
-Science 101 course)
+# ALTa Ciencia Abierta
 
 
 - [Meet the attendees!](#meet-the-attendees)
@@ -25,6 +24,14 @@ Science 101 course)
   - [Do they encourage other people to practice open science? (n = 175,
     80.6%)](#do-they-encourage-other-people-to-practice-open-science-n--175-806)
   - [Final remarks](#final-remarks)
+
+This report presents an overview of the participants who attended ALTa
+Ciencia Abierta, the Latin American contextualization of NASA’s Open
+Science 101 course, in 2024. It offers a snapshot of their backgrounds,
+representation, accessibility needs, and prior knowledge and attitudes
+toward Open Science practices. The findings aim to inform future
+iterations of the program and contribute to the ongoing development of
+inclusive, community-driven training in the region.
 
 *Note: The following report is created based on the responses of
 participants that signed an informed consent to publish their data. This

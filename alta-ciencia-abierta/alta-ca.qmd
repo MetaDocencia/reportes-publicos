@@ -1,6 +1,12 @@
 ---
-title: "ALTa Ciencia Abierta (Latin American contextualization of NASA's Open Science 101 course)"
+title: "ALTa Ciencia Abierta" 
+subtitle: "(Latin American contextualization of NASA's Open Science 101 course)"
 ---
+
+This report presents an overview of the participants who attended ALTa Ciencia Abierta, the Latin American contextualization of NASA's Open Science 101 course, in 2024. It offers a snapshot of their backgrounds, representation, accessibility needs, and prior knowledge and attitudes toward Open Science practices. The findings aim to inform future iterations of the program and contribute to the ongoing development of inclusive, community-driven training in the region.
+
+*Note: The following report is created based on the responses of participants that signed an informed consent to publish their data. This data correspond to a 44% of the actual participants.* 
+
 
 ```{r}
 # Paquetes
@@ -49,7 +55,6 @@ participantes <- readxl::read_xlsx("data/datos_anonimizados.xlsx")
 
 ```
 
-*Note: The following report is created based on the responses of participants that signed an informed consent to publish their data. This data correspond to a 44% of the actual participants.* 
 
 ## Meet the attendees!
 
