@@ -101,7 +101,7 @@ plot.height = n_distinct(n_educ$nivel_educativo_IN)*0.5+0.5
 
 ### What is their educational level? (n = `r sum(n_educ$n)`, `r round(sum(n_educ$n)/nrow(participantes)*100,1)`%)
 
-A `r n_educ$por[5]`% (n = `r n_educ$n[5]`) has completed a graduate degree, `r n_educ$por[4]`% (n = `r n_educ$n[4]`) completed some graduate courses, `r n_educ$por[4]`% (n = `r n_educ$n[4]`) completed an undergraduate degree, `r sum(n_educ$por[3])`% (n = `r sum(n_educ$n[3])`) has taken or is currently taking undergraduate courses and `r n_educ$por[1]`% (n = `r n_educ$n[1]`) completed high school.
+A `r n_educ$por[3]`% (n = `r n_educ$n[3]`) has completed a graduate degree, `r n_educ$por[5]`% (n = `r n_educ$n[5]`) completed some graduate courses, `r n_educ$por[1]`% (n = `r n_educ$n[1]`) completed a bachelor degree, `r sum(n_educ$por[4])`% (n = `r sum(n_educ$n[4])`) has taken or is currently taking undergraduate courses and `r n_educ$por[2]`% (n = `r n_educ$n[2]`) completed high school.
 
 #### Figure 2. Educational level of the people who signed up
 

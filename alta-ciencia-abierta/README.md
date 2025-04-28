@@ -53,10 +53,10 @@ Uruguay, Nicaragua, Spain, Guatemala, Honduras, India and Poland.
 
 ### What is their educational level? (n = 215, 99.1%)
 
-A 16.3% (n = 35) has completed a graduate degree, 13.5% (n = 29)
-completed some graduate courses, 13.5% (n = 29) completed an
-undergraduate degree, 45.1% (n = 97) has taken or is currently taking
-undergraduate courses and 21.4% (n = 46) completed high school.
+A 45.1% (n = 97) has completed a graduate degree, 16.3% (n = 35)
+completed some graduate courses, 13.5% (n = 29) completed a bachelor
+degree, 21.4% (n = 46) has taken or is currently taking undergraduate
+courses and 3.7% (n = 8) completed high school.
 
 #### Figure 2. Educational level of the people who signed up
 
