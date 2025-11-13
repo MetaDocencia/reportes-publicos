@@ -82,3 +82,32 @@ write_sheet(df_registros,
 write_sheet(ultima_actualizacion,
             ss = hoja_calculo,
             sheet = "ultima_actualizacion")
+
+# Calcular totales de vistas y descargas
+totales_hoy <- df_registros %>% 
+  summarise(
+    total_vistas = sum(vistas, na.rm = TRUE),
+    total_descargas = sum(descargas, na.rm = TRUE)
+  ) %>%
+  mutate(timestamp = ultima_actualizacion$timestamp) %>%
+  relocate(timestamp, .before = 1)  # timestamp como primera columna
+
+# Nombre de la hoja donde guardamos el histórico
+hoja_totales <- "totales_historicos"
+
+# Si la hoja no existe, la creamos; si existe, append
+nombres_hojas <- sheet_names(hoja_calculo)
+
+if (hoja_totales %in% nombres_hojas) {
+  sheet_append(
+    ss = hoja_calculo,
+    data = totales_hoy,
+    sheet = hoja_totales
+  )
+} else {
+  write_sheet(
+    totales_hoy,
+    ss = hoja_calculo,
+    sheet = hoja_totales
+  )
+}
