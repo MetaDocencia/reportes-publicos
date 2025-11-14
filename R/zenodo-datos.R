@@ -111,3 +111,89 @@ if (hoja_totales %in% nombres_hojas) {
     sheet = hoja_totales
   )
 }
+
+# ==============================
+# Cálculo de totales anuales (solo el 30 de noviembre)
+# ==============================
+
+fecha_hoy <- as.Date(ultima_actualizacion$timestamp)
+
+if (lubridate::month(fecha_hoy) == 11 && lubridate::day(fecha_hoy) == 30) {
+  
+  hoja_totales_anuales <- "totales_anuales"
+  # volvemos a usar nombres_hojas, ya creado arriba
+  nombres_hojas <- sheet_names(hoja_calculo)
+  
+  # Año que representa el final del período (ej. 2025 representa 1/12/2024–30/11/2025)
+  anio_actual <- lubridate::year(fecha_hoy)
+  
+  if (!(hoja_totales_anuales %in% nombres_hojas)) {
+    # PRIMER AÑO: no hay con qué comparar, se guarda solo acumulados a la fecha
+    totales_anuales_hoy <- totales_hoy %>% 
+      dplyr::transmute(
+        timestamp,
+        anio = anio_actual,
+        total_vistas_periodo = total_vistas,
+        total_descargas_periodo = total_descargas,
+        total_vistas_acumuladas = total_vistas,
+        total_descargas_acumuladas = total_descargas
+      )
+    
+    write_sheet(
+      totales_anuales_hoy,
+      ss = hoja_calculo,
+      sheet = hoja_totales_anuales
+    )
+    
+  } else {
+    # Ya existe la hoja totales_anuales: leemos lo anterior
+    totales_anuales <- read_sheet(
+      ss = hoja_calculo,
+      sheet = hoja_totales_anuales
+    )
+    
+    if (nrow(totales_anuales) == 0) {
+      # Hoja existe pero está vacía → mismo tratamiento que primer año
+      totales_anuales_hoy <- totales_hoy %>% 
+        dplyr::transmute(
+          timestamp,
+          anio = anio_actual,
+          total_vistas_periodo = total_vistas,
+          total_descargas_periodo = total_descargas,
+          total_vistas_acumuladas = total_vistas,
+          total_descargas_acumuladas = total_descargas
+        )
+      
+      write_sheet(
+        totales_anuales_hoy,
+        ss = hoja_calculo,
+        sheet = hoja_totales_anuales
+      )
+      
+    } else {
+      # Tomamos el último registro (último 30 de noviembre registrado)
+      ultimo_registro <- totales_anuales %>% 
+        dplyr::slice_tail(n = 1)
+      
+      # Diferencias: qué pasó entre el último 30/11 y hoy
+      vistas_periodo <- totales_hoy$total_vistas - ultimo_registro$total_vistas_acumuladas
+      descargas_periodo <- totales_hoy$total_descargas - ultimo_registro$total_descargas_acumuladas
+      
+      nuevo_registro_anual <- totales_hoy %>% 
+        dplyr::transmute(
+          timestamp,
+          anio = anio_actual,
+          total_vistas_periodo = vistas_periodo,
+          total_descargas_periodo = descargas_periodo,
+          total_vistas_acumuladas = total_vistas,
+          total_descargas_acumuladas = total_descargas
+        )
+      
+      sheet_append(
+        ss = hoja_calculo,
+        sheet = hoja_totales_anuales,
+        data = nuevo_registro_anual
+      )
+    }
+  }
+}
