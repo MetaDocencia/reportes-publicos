@@ -2,7 +2,10 @@ name: Recuperar registros zenodo
 
 on:
   schedule:
+    # Actualización semanal de totales
     - cron: '0 20 * * 5'
+    # Cálculo anual solo el 30/11
+    - cron: '0 20 30 11 *'
   workflow_dispatch:
 
 jobs:
