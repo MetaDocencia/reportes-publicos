@@ -51,7 +51,6 @@ participacion_anio <- tb %>%
     cantidad = n_distinct(evento),
     .groups = "drop"
   ) %>%
-  mutate(anio = as.character(anio)) %>%
   left_join(eventos_anio, by = "anio") %>%
   mutate(porcentaje = round(cantidad / total_eventos * 100, 2)) %>%
   mutate(across(everything(), ~ ifelse(is.na(.x), "Dato incompleto", as.character(.x))))
