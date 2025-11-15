@@ -1,4 +1,4 @@
-name: Recuperar registros zenodo
+name: Eventos de MD
 
 on:
   workflow_dispatch:
