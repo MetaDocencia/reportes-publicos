@@ -10,6 +10,12 @@ gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
 # ID de google sheets
 hoja_calculo <- Sys.getenv("GSHEET_EVENTOS")
 
+cat("Longitud de hoja_calculo:", nchar(hoja_calculo), "\n")
+
+if (identical(hoja_calculo, "") || is.na(hoja_calculo)) {
+  stop("La variable de entorno GSHEET_EVENTOS no está definida o está vacía.")
+}
+
 tb <- read_sheet(hoja_calculo, sheet = "eventos")
 
 tb <- tb %>%
