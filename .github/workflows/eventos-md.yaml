@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.AUTENTICACION_NO_INTERACTIVA }}
-      GSHEET_EVENTOS_ID: ${{ secrets.GSHEET_EVENTOS }}
+      GSHEET_EVENTOS: ${{ secrets.GSHEET_EVENTOS }}
 
     steps:
       - name: Checkout del repo
@@ -27,6 +27,16 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install libcurl4-openssl-dev libssl-dev
+        shell: bash
+
+      # Paso de debug para verificar que la env var NO esté vacía
+      - name: Debug GSHEET_EVENTOS
+        run: |
+          echo "Longitud de GSHEET_EVENTOS: ${#GSHEET_EVENTOS}"
+          if [ -z "${GSHEET_EVENTOS}" ]; then
+            echo "ERROR: GSHEET_EVENTOS está vacío o no definido."
+            exit 1
+          fi
         shell: bash
 
       - name: Instalar paquetes de R necesarios
