@@ -1,4 +1,7 @@
-library(tidyverse)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(lubridate)
 library(googlesheets4)
 
 # for googlesheets4
