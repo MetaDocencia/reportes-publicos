@@ -8,7 +8,7 @@ library(googlesheets4)
 gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
 
 # ID de google sheets
-hoja_calculo <- Sys.getenv("GSHEET_EVENTOS_ID")
+hoja_calculo <- Sys.getenv("GSHEET_EVENTOS")
 
 tb <- read_sheet(hoja_calculo, sheet = "eventos")
 
