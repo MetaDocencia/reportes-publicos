@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.AUTENTICACION_NO_INTERACTIVA }}
-      GSHEET_EVENTOS_ID: ${{ secrets.GSHEET_EVENTOS_ID }}
+      GSHEET_EVENTOS_ID: ${{ secrets.GSHEET_EVENTOS }}
 
     steps:
       - name: Checkout del repo
