@@ -1,0 +1,56 @@
+name: Cursos de MD
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Se ejecuta el primer lunes de cada mes
+    - cron: "0 0 1-7 * 1"
+
+jobs:
+  eventos-md:
+    name: Actualizar métricas de cursos
+    runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.AUTENTICACION_NO_INTERACTIVA }}
+      GSHEET_EVENTOS: ${{ secrets.GSHEET_CURSOS }}
+
+    steps:
+      - name: Checkout del repo
+        uses: actions/checkout@v4
+
+      - name: Configurar R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Instalar dependencias del sistema (curl, ssl)
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libcurl4-openssl-dev libssl-dev
+        shell: bash
+
+      # Paso de debug para verificar que la env var NO esté vacía
+      - name: Debug GSHEET_CURSOS
+        run: |
+          echo "Longitud de GSHEET_CURSOS: ${#GSHEET_CURSOS}"
+          if [ -z "${GSHEET_CURSOS}" ]; then
+            echo "ERROR: GSHEET_CURSOS está vacío o no definido."
+            exit 1
+          fi
+        shell: bash
+
+      - name: Instalar paquetes de R necesarios
+        run: |
+          Rscript -e 'install.packages(c(
+            "dplyr",
+            "stringr",
+            "tidyr",
+            "lubridate",
+            "googlesheets4"
+          ))'
+        shell: bash
+
+      - name: Ejecutar script cursos-md.R
+        run: |
+          source("R/cursos-md.R")
+        shell: Rscript {0}
