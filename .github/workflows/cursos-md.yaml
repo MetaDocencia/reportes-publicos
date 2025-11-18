@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.AUTENTICACION_NO_INTERACTIVA }}
-      GSHEET_EVENTOS: ${{ secrets.GSHEET_CURSOS }}
+      GSHEET_CURSOS: ${{ secrets.GSHEET_CURSOS }}
 
     steps:
       - name: Checkout del repo
@@ -54,3 +54,4 @@ jobs:
         run: |
           source("R/cursos-md.R")
         shell: Rscript {0}
+
