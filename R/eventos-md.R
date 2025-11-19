@@ -22,6 +22,29 @@ tb <- tb %>%
   select(evento, fecha_evento_inicio, modalidad, ciudad, pais, colaboran, equipo, participacion) %>%
   mutate(anio = year(fecha_evento_inicio))
 
+# Eventos realizados en el año hasta la fecha
+
+ahora <- Sys.time() - hours(3)
+hoy  <- as_date(ahora)
+anio_actual <- year(hoy)
+
+eventos_a_la_fecha <- tb %>%
+  # Solo eventos del año actual cuya fecha de inicio ya pasó o es hoy
+  filter(anio == anio_actual,
+         as_date(fecha_evento_inicio) <= hoy) %>%
+  distinct(evento) %>%
+  summarise(
+    ultima_actualizacion = ahora,
+    cantidad_eventos     = n()
+  )
+
+# Escribir/actualizar hoja "a-la-fecha"
+write_sheet(
+  data  = eventos_a_la_fecha,
+  ss    = hoja_calculo,
+  sheet = "a_la_fecha"
+)
+
 # Cantidad de eventos por anio y modalidad
 modalidad_anio <- tb %>%
   distinct(evento, .keep_all = TRUE) %>%
@@ -106,7 +129,7 @@ write_sheet(data = resumen_anio,
 
 # Registrar horario de última actualización
 # Levantar hora actual
-ultima_actualizacion <- data.frame(timestamp = Sys.time()-hours(3))
+ultima_actualizacion <- data.frame(timestamp = ahora)
 
 # Escribir la timestamp a una nueva hoja llamada "ultima_actualizacion"
 write_sheet(ultima_actualizacion,
