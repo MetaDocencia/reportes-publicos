@@ -16,7 +16,7 @@ zenodo <- ZenodoManager$new(token = NULL)
 
 # Extraer todos los registros de la comunidad MetaDocencia 
 # El argumento "size" determina el n de resultados por página retornados por la función
-registros <- zenodo$getRecords(q = "communities:metadocencia", size = 10, all_versions = TRUE)
+registros <- zenodo$getRecords(q = "communities:metadocencia", all_versions = TRUE)
 
 # Filtrar la información relevante: título, fecha de publicacion, vistas y descargas
 # únicas y tipo de publicación. 
