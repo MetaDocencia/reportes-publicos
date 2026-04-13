@@ -109,7 +109,14 @@ cursos_tipo <- cursos %>%
   left_join(nps_tipo, by = "nombre") %>% 
   select(-tot_nps1)
 
+cursos_totales <- cursos_totales %>%
+  mutate(across(where(is.numeric), ~ifelse(is.infinite(.) | is.nan(.), NA, .)))
 
+cursos_anios <- cursos_anios %>%
+  mutate(across(where(is.numeric), ~ifelse(is.infinite(.) | is.nan(.), NA, .)))
+
+cursos_tipo <- cursos_tipo %>%
+  mutate(across(where(is.numeric), ~ifelse(is.infinite(.) | is.nan(.), NA, .)))
 
 write_sheet(data = cursos_totales,
             ss = hoja_calculo,
