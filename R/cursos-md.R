@@ -15,7 +15,7 @@ cursos <- read_sheet(hoja_calculo, sheet = "cursos-completos")
 
 # Totales
 
-df %>%
+n_paises <- df %>%
   separate_rows(paises, sep = "/") %>%
   filter(!is.na(paises)) %>% 
   pull(paises) %>%
