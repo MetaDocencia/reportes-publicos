@@ -15,11 +15,13 @@ cursos <- read_sheet(hoja_calculo, sheet = "cursos-completos")
 
 # Totales
 
-n_paises <- cursos %>% 
-  separate_rows(paises, sep = "/") %>% 
-  distinct(paises) %>% 
-  count() %>% 
-  pull(n)
+n_paises <- cursos %>%
+  separate_rows(paises, sep = "/") %>%
+  filter(!is.na(paises)) %>% 
+  pull(paises) %>%
+  n_distinct()
+   
+
 
 nps <- cursos %>% 
   filter(!is.na(NPS)) %>% 

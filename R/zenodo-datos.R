@@ -14,9 +14,9 @@ hoja_calculo <- "1vJ5BffSEJia0HS36zUJU90ivmekopyBVEsKTndtJOQI"
 # Configurar el cliente Zenodo con el token de acceso personal
 zenodo <- ZenodoManager$new(token = NULL)
 
-# Extraer todos los registros de la comunidad MetaDocencia (usar un n mayor al 
-# número de publicaciones actuales)
-registros <- zenodo$getRecords(q = "communities:metadocencia", size = 700, all_versions = TRUE)
+# Extraer todos los registros de la comunidad MetaDocencia 
+# El argumento "size" determina el n de resultados por página retornados por la función
+registros <- zenodo$getRecords(q = "communities:metadocencia", all_versions = TRUE)
 
 # Filtrar la información relevante: título, fecha de publicacion, vistas y descargas
 # únicas y tipo de publicación. 
