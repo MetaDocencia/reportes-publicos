@@ -21,18 +21,14 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
             use-public-rspm: true
-      - name: Install libcurl and libssl on Linux
-        run: 'sudo apt-get -y install libcurl4-openssl-dev'
+      - name: Install system dependencies
+        run: sudo apt-get install -y libcurl4-openssl-dev libsodium-dev librdf0-dev libsecret-1-dev
         shell: bash
       - name: Install CRAN packages
         run: Rscript -e 'install.packages(c("googlesheets4", "lubridate"))'
-      - name: Install libsodium 
-        run: 'sudo apt-get install -y libsodium-dev'
-      - name: Install librdf0-dev
-        run: 'sudo apt-get install -y librdf0-dev'
       - name: Install remotes
         run: |
-          Rscript -e "install.packages('remotes', repos='https://ftp.belnet.be/mirror/CRAN')"
+          Rscript -e "install.packages('remotes')"
       - name: Install zen4R
         run: |
           Rscript -e "remotes::install_github('eblondel/zen4R', dependencies = T)"
