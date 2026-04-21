@@ -19,7 +19,15 @@ if (identical(hoja_calculo, "") || is.na(hoja_calculo)) {
 tb <- read_sheet(hoja_calculo, sheet = "eventos")
 
 tb <- tb %>%
-  select(evento, fecha_evento_inicio, modalidad, ciudad, pais, colaboran, equipo, participacion) %>%
+  select(evento, 
+         fecha_evento_inicio, 
+         modalidad, 
+         ciudad, 
+         pais, 
+         colaboran, 
+         completamos_asistencia, #Solo eventos donde efectivamente se participó
+         equipo, 
+         participacion) %>%
   mutate(anio = year(fecha_evento_inicio))
 
 # Eventos realizados en el año hasta la fecha
@@ -29,9 +37,11 @@ hoy  <- as_date(ahora)
 anio_actual <- year(hoy)
 
 eventos_a_la_fecha <- tb %>%
-  # Solo eventos del año actual cuya fecha de inicio ya pasó o es hoy
+  # Solo eventos del año actual cuya fecha de inicio ya pasó o es hoy y donde efectivamente se participó
   filter(anio == anio_actual,
-         as_date(fecha_evento_inicio) <= hoy) %>%
+         as_date(fecha_evento_inicio) <= hoy,
+         completamos_asistencia == TRUE
+         ) %>%
   distinct(evento) %>%
   summarise(
     ultima_actualizacion = ahora,
@@ -45,7 +55,7 @@ write_sheet(
   sheet = "a_la_fecha"
 )
 
-# Cantidad de eventos por anio y modalidad
+# Cantidad de eventos por anio y modalidad con participacion efectiva
 modalidad_anio <- tb %>%
   distinct(evento, .keep_all = TRUE) %>%
   group_by(anio, modalidad) %>%
