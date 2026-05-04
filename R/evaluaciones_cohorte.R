@@ -13,21 +13,18 @@ library(purrr)
 # necesarios para interactuar con los datos sin necesidad de autenticación manual.
 
 # # for googledrive
-# drive_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
+drive_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
 # 
 # 
 # # for googlesheets4
-# gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
-
-
-gs4_auth("jesica.formoso@metadocencia.org")
+gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
 
 
 # Funcion para procesar las respuestas de los formularios
 procesar_forms <- function() {
   
   # Fecha del día de hoy
-  fecha_actual <- "2026-04-16"
+  fecha_actual <- Sys.Date()
   
   # Información de las cohortes
   info_cohortes <- read_sheet("16NHgla2rkpA2Fye8Tl_LCHFlsJOfLOf1tyKQWEqZI-w")
@@ -184,7 +181,7 @@ procesar_forms <- function() {
   # Listado de posibles columnas de evaluaciones
   eval_columns <- c("E1", "E2", "E3", "E4")
   
-  # Verificar cuáles de las columnas E1 a E5 están presentes en form_completos y form_aprobados
+  # Verificar cuáles de las columnas E1 a E4 están presentes en form_completos y form_aprobados
   for (col in eval_columns) {
     if (!(col %in% names(form_completos))) {
       form_completos[[col]] <- 0  # Añadir columna faltante con ceros
