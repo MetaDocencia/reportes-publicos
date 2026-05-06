@@ -42,7 +42,7 @@ procesar_forms <- function() {
     # Registrar mensaje en GSHEET_INFORMACION_COHORTES
     write_sheet(
       mensaje,
-      ss = info_cohortes,  
+      ss = planilla_info_cohortes,  
       sheet = "Registro"
     )
     
@@ -62,7 +62,7 @@ procesar_forms <- function() {
     # Registrar mensaje en GSHEET_INFORMACION_COHORTES
     write_sheet(
       mensaje_error,
-      ss = info_cohortes,  
+      ss = planilla_info_cohortes,  
       sheet = "Registro"
     )
     
@@ -98,7 +98,7 @@ procesar_forms <- function() {
   hoja_calculo = cohorte_actual$planilla_integrada
   
   # Evaluaciones  por encuentro
-  Evaluaciones <- read_sheet(ss = info_cohortes, sheet = "Evaluaciones")
+  Evaluaciones <- read_sheet(ss = planilla_info_cohortes, sheet = "Evaluaciones")
   
   encuentros <- setNames(
     map(Evaluaciones$ID_evaluacion, ~ read_sheet(.x)),
