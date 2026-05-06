@@ -26,7 +26,7 @@ procesar_forms <- function() {
   fecha_actual <- Sys.Date()
   
   # Información de las cohortes
-  info_cohortes <- planilla_info_cohortes
+  info_cohortes <- read_sheet(planilla_info_cohortes, sheet = "Sheet1")
   
   # Identificar cohorte actual
   cohorte_actual <- info_cohortes %>%
