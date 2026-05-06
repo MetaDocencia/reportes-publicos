@@ -15,7 +15,7 @@ library(googledrive)
 
 
 # for googlesheets4
-gs4_auth(path = Sys.getenv('AUTENTICACION_NO_INTERACTIVA'))
+gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
 
 planilla_info_cohortes <- Sys.getenv('GSHEET_INFORMACION_COHORTES')
 
