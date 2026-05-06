@@ -14,11 +14,11 @@ library(googledrive)
 # necesarios para interactuar con los datos sin necesidad de autenticación manual.
 
 # # for googledrive
-drive_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
+drive_auth(path = Sys.getenv('AUTENTICACION_NO_INTERACTIVA'))
 # 
 # 
 # # for googlesheets4
-gs4_auth(path = Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
+gs4_auth(path = Sys.getenv('AUTENTICACION_NO_INTERACTIVA'))
 
 
 # Funcion para procesar las respuestas de los formularios
