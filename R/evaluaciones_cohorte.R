@@ -13,13 +13,11 @@ library(googledrive)
 # en Google Drive. El sistema de autenticación basado en OAuth 2.0 asegura que se tengan los permisos
 # necesarios para interactuar con los datos sin necesidad de autenticación manual.
 
-# # for googledrive
-drive_auth(path = Sys.getenv('AUTENTICACION_NO_INTERACTIVA'))
-# 
-# 
-# # for googlesheets4
+
+# for googlesheets4
 gs4_auth(path = Sys.getenv('AUTENTICACION_NO_INTERACTIVA'))
 
+planilla_info_cohortes <- Sys.getenv('GSHEET_INFORMACION_COHORTES')
 
 # Funcion para procesar las respuestas de los formularios
 procesar_forms <- function() {
@@ -28,7 +26,7 @@ procesar_forms <- function() {
   fecha_actual <- Sys.Date()
   
   # Información de las cohortes
-  info_cohortes <- read_sheet("16NHgla2rkpA2Fye8Tl_LCHFlsJOfLOf1tyKQWEqZI-w")
+  info_cohortes <- planilla_info_cohortes
   
   # Identificar cohorte actual
   cohorte_actual <- info_cohortes %>%
@@ -44,7 +42,7 @@ procesar_forms <- function() {
     # Registrar mensaje en GSHEET_INFORMACION_COHORTES
     write_sheet(
       mensaje,
-      ss = "16NHgla2rkpA2Fye8Tl_LCHFlsJOfLOf1tyKQWEqZI-w",  
+      ss = info_cohortes,  
       sheet = "Registro"
     )
     
@@ -64,7 +62,7 @@ procesar_forms <- function() {
     # Registrar mensaje en GSHEET_INFORMACION_COHORTES
     write_sheet(
       mensaje_error,
-      ss = "GSHEET_INFORMACION_COHORTES",  
+      ss = info_cohortes,  
       sheet = "Registro"
     )
     
@@ -100,7 +98,7 @@ procesar_forms <- function() {
   hoja_calculo = cohorte_actual$planilla_integrada
   
   # Evaluaciones  por encuentro
-  Evaluaciones <- read_sheet(ss = "16NHgla2rkpA2Fye8Tl_LCHFlsJOfLOf1tyKQWEqZI-w", sheet = "Evaluaciones")
+  Evaluaciones <- read_sheet(ss = info_cohortes, sheet = "Evaluaciones")
   
   encuentros <- setNames(
     map(Evaluaciones$ID_evaluacion, ~ read_sheet(.x)),
