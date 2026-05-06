@@ -4,6 +4,7 @@ library(dplyr)
 library(lubridate)
 library(stringr)
 library(purrr)
+library(googledrive)
 
 # Autenticación con Google Drive y Google Sheets
 # Este bloque autentica al script con las APIs de Google Drive y Google Sheets, utilizando credenciales
