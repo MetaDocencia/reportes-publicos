@@ -28,13 +28,13 @@ procesar_forms <- function() {
   # Información de las cohortes
   info_cohortes <- read_sheet(planilla_info_cohortes, sheet = "Sheet1")
 
- # Forzar conversión a Date
+  # Convertir fechas
   info_cohortes <- info_cohortes %>%
-    mutate(
-      fecha_inicio = as.Date(fecha_inicio),
-      fecha_fin = as.Date(fecha_fin)
-    ) 
-  
+  mutate(
+    fecha_inicio = as.Date(as.character(fecha_inicio)),
+    fecha_fin = as.Date(as.character(fecha_fin))
+  )
+ 
   # Identificar cohorte actual
   cohorte_actual <- info_cohortes %>%
     filter(fecha_inicio <= fecha_actual & fecha_fin >= fecha_actual)
