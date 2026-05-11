@@ -242,7 +242,12 @@ procesar_forms <- function() {
            consolidado_evaluaciones, asistencia) %>% 
     mutate(asistencia_minima = ifelse(asistencia >= 3 | forms_completados >= 3, "Sí", "No"))
   
-  
+  # Resumen 
+  resumen_forms_aprobados <- form_aprobados %>%
+             count(forms_aprobados) 
+
+  resumen_asistencia_minima <- form_aprobados %>%
+             count(asistencia_minima) 
   
   write_sheet(form_aprobados, 
               ss = hoja_calculo,
@@ -252,7 +257,13 @@ procesar_forms <- function() {
               ss = hoja_calculo,
               sheet = "Aprobados_no_inscriptos")
   
-  
+  write_sheet(resumen_forms_aprobados,
+            ss = hoja_calculo,
+            sheet = "Resumen_aprobados")
+
+    write_sheet(resumen_forms_aprobados,
+            ss = hoja_calculo,
+            sheet = "Resumen_asistencia")
   
   
   
