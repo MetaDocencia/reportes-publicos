@@ -10,6 +10,7 @@ jobs:
     name: Actualizacion Evaluaciones Cohorte
     runs-on: ubuntu-latest
     env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       GITHUB_PAT: ${{ secrets.TOKEN_USUARIO_JESI }}
       GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.AUTENTICACION_NO_INTERACTIVA }}
       GSHEET_INFORMACION_COHORTES: ${{ secrets.GSHEET_INFORMACION_COHORTES }}
