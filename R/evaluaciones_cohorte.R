@@ -268,7 +268,7 @@ procesar_forms <- function() {
             ss = hoja_calculo,
             sheet = "Resumen_aprobados")
 
-    write_sheet(resumen_forms_aprobados,
+    write_sheet(resumen_asistencia_minima,
             ss = hoja_calculo,
             sheet = "Resumen_asistencia")
   
