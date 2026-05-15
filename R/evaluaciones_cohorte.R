@@ -92,7 +92,14 @@ procesar_forms <- function() {
   
   # Seleccionar columnas que contengan "email" o "correo" y "ORCID" (sin importar mayúsculas/minúsculas)
   datos_inscripcion <- datos_inscripcion %>%
-    select()
+    select(
+      email = first(matches("(?i)email|correo")),  # Selecciona la primera columna que contenga "email" o "correo"
+      orcid = first(matches("(?i)orcid"))  # Selecciona la primera columna que contenga "ORCID"
+    )
+  
+  # Convertir los emails a minúsculas, si la columna 'email' existe
+  datos_inscripcion$email <- str_to_lower(datos_inscripcion$email)
+  
   
   # Planilla para almacenar los resultados de esta función
   hoja_calculo = cohorte_actual$planilla_integrada
@@ -115,6 +122,7 @@ procesar_forms <- function() {
       mutate(encuentro = encuentro_numero)
     
     names(encuentros[[encuentro_numero]]) <- c("timestamp", 
+                                               "email",
                                                "puntaje", 
                                                "orcid", 
                                                "nombre", 
@@ -124,6 +132,7 @@ procesar_forms <- function() {
     
     
     encuentros[[encuentro_numero]] <- encuentros[[encuentro_numero]] %>%
+      mutate(email = str_to_lower(email)) %>% 
       select(-matches("^P\\d+$"))
     
   }
@@ -144,7 +153,7 @@ procesar_forms <- function() {
   # Eliminar los registros duplicados para la misma persona en el mismo encuentro 
   # (si respondieron más de una vez, quedarse con la nota más alta)
   Eval <- Eval %>%
-    group_by(orcid, evaluacion) %>%
+    group_by(orcid, email, evaluacion) %>%
     slice_max(puntaje, n = 1, with_ties = FALSE) %>%
     ungroup()
   
@@ -155,22 +164,22 @@ procesar_forms <- function() {
   # Generar planilla con las personas en Eval que no están presentes en datos_inscripcion
   # usando ORCID e email. 
   no_encontrados <- Eval %>%
-    anti_join(datos_inscripcion, by = c("orcid")) %>%
-    select(nombre, apellido, orcid, evaluacion)
+    anti_join(datos_inscripcion, by = c("orcid", "email")) %>%
+    select(nombre, apellido, email, orcid, evaluacion)
   
   # Generar form_completos y form_aprobados
   form_completos <- Eval %>%
-    anti_join(no_encontrados, by = c("orcid")) %>%
-    count(orcid, evaluacion) %>%
+    anti_join(no_encontrados, by = c("orcid", "email")) %>%
+    count(email, orcid, evaluacion) %>%
     pivot_wider(id_cols = c("email", "orcid"),
                 names_from = evaluacion,
                 values_from = n,
                 values_fill = list(n = 0)) 
   
   form_aprobados <- Aprobados %>%
-    anti_join(no_encontrados, by = c("orcid")) %>%
-    count(orcid, evaluacion) %>%
-    pivot_wider(id_cols = c("orcid"),
+    anti_join(no_encontrados, by = c("orcid", "email")) %>%
+    count(email, orcid, evaluacion) %>%
+    pivot_wider(id_cols = c("email", "orcid"),
                 names_from = evaluacion,
                 values_from = n,
                 values_fill = list(n = 0)) 
@@ -234,8 +243,8 @@ procesar_forms <- function() {
   # Asistencia y aprobación
   form_aprobados <- form_aprobados %>% 
     left_join(form_completos %>% select(orcid, email, forms_completados), 
-              by = c("orcid")) %>%
-    left_join(planilla_integrada, by = c("orcid")) %>% 
+              by = c("orcid", "email")) %>%
+    left_join(planilla_integrada, by = c("orcid", "email")) %>% 
     select(email, orcid, E1:E4, forms_aprobados, evaluaciones_faltantes, forms_completados,
            consolidado_evaluaciones, asistencia) %>% 
     mutate(asistencia_minima = ifelse(asistencia >= 3 | forms_completados >= 3, "Sí", "No"))
